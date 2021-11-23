@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  api-service:
+    build: ApiProject/
+    ports: 
+      - 8080:8080
+  db: 
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    restart: always
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - 1433:1433
+  vault:
+    image: vault:latest
+    restart: always
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=root
+    ports:
+      - 8200:8200 
