@@ -14,6 +14,7 @@ services:
       - 1433:1433
   vault:
     image: vault:latest
+    restart: always
     environment:
       - VAULT_DEV_ROOT_TOKEN_ID=root
     ports:
