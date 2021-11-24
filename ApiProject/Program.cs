@@ -18,6 +18,20 @@ namespace WebApi
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+                    var builtConfig = config.Build();
+
+                    config.AddVault(settings =>
+                    {
+                        var vaultSettings = builtConfig.GetSection("Vault");
+                        settings.Address = vaultSettings["Address"];
+                        settings.RoleName = vaultSettings["Role"];
+                    });
+            
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
