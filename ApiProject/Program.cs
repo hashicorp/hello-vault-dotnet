@@ -21,6 +21,7 @@ namespace WebApi
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                    config.AddEnvironmentVariables("VAULT_TOKEN");
 
                     var builtConfig = config.Build();
 
@@ -28,9 +29,10 @@ namespace WebApi
                     {
                         var vaultSettings = builtConfig.GetSection("Vault");
                         settings.Address = vaultSettings["Address"];
-                        settings.RoleName = vaultSettings["Role"];
+                        settings.RoleId = vaultSettings["RoleId"];
+                        settings.MountPath = vaultSettings["MountPath"];
+                        settings.TokenPath = vaultSettings["TokenPath"];
                     });
-            
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

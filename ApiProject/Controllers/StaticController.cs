@@ -10,13 +10,14 @@ namespace WebApi
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProjectsController : ControllerBase
+    public class StaticController : ControllerBase
     {
-        public const string endpoint = "http://127.0.0.1:1717/api";
+        private const string secureApiEndpoint = "http://127.0.0.1:1717/api";
+
         [HttpGet]
-        public string GetAPIInfo()
+        public string GetApiInfo()
         {
-            HttpWebRequest apiRequest = (HttpWebRequest)WebRequest.Create(endpoint);
+            HttpWebRequest apiRequest = (HttpWebRequest)WebRequest.Create(secureApiEndpoint);
             apiRequest.Headers["x-api-key"] = "my-secret-key";
 
             HttpWebResponse apiResponse = (HttpWebResponse)apiRequest.GetResponse();

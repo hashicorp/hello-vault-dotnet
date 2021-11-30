@@ -1,7 +1,6 @@
-# This section grants all access on "secret/*". Further restrictions can be
-# applied to this broad policy, as shown below.
-path "secret/*" {
-  capabilities = ["create", "read", "update", "delete", "list"]
+# This section grants all access on "kv-v2/data/api-key*"
+path "kv-v2/data/api-key/*" {
+  capabilities = ["read", "update"]
 }
 
 # Even though we allowed secret/*, this line explicitly denies
