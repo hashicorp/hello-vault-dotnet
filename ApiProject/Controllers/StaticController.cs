@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace WebApi
 {
@@ -13,12 +14,20 @@ namespace WebApi
     public class StaticController : ControllerBase
     {
         private const string secureApiEndpoint = "http://127.0.0.1:1717/api";
+        private readonly IConfiguration _config;
+
+        public StaticController(IConfiguration config)
+        {
+            _config = config;
+        }
 
         [HttpGet]
         public string GetApiInfo()
         {
+            string apiKey = _config.GetValue<string>("api:apikey");
+
             HttpWebRequest apiRequest = (HttpWebRequest)WebRequest.Create(secureApiEndpoint);
-            apiRequest.Headers["x-api-key"] = "my-secret-key";
+            apiRequest.Headers["x-api-key"] = apiKey;
 
             HttpWebResponse apiResponse = (HttpWebResponse)apiRequest.GetResponse();
 
