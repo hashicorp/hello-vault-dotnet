@@ -22,4 +22,4 @@ vault write auth/approle/role/dev-role token_policies=dev-policy
 vault secrets enable kv-v2
 
 # Add our api key to our key-value store
-vault kv put secret/api-key key="myapikey"
+vault kv put secret/api-key key="my-secret-key"

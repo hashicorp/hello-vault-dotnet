@@ -28,7 +28,7 @@ namespace WebApi
 
         public override void Load()
         {
-            Secret<SecretData> secrets = _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(path: "/creds").Result;
+            Secret<SecretData> secrets = _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(path: "/secret").Result;
             string apiKey = secrets.Data.Data["api-key"].ToString();
             Data.Add("api:apikey", apiKey);
         }
