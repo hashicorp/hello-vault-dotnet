@@ -1,21 +1,30 @@
 version: "3.9"
 services:
+
   api-service:
     build: ApiProject/
-    ports: 
+    depends_on:
+      db:
+        condition: service_started
+    ports:
       - 8080:8080
-  db: 
-    image: mcr.microsoft.com/mssql/server:2017-latest
-    restart: always
+
+  db:
+    image: mcr.microsoft.com/azure-sql-edge:latest
     environment:
-      - SA_PASSWORD=Pass@word
-      - ACCEPT_EULA=Y
+      MSSQL_SA_PASSWORD:  Pass@word
+      ACCEPT_EULA:        1
+    cap_add:
+      - SYS_PTRACE
     ports:
       - 1433:1433
+
   vault:
     image: vault:latest
     restart: always
     environment:
-      - VAULT_DEV_ROOT_TOKEN_ID=root
+      VAULT_DEV_ROOT_TOKEN_ID: root
+    cap_add:
+      - IPC_LOCK
     ports:
-      - 8200:8200 
+      - 8200:8200
