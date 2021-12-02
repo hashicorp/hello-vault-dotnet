@@ -12,8 +12,9 @@ services:
   db:
     image: mcr.microsoft.com/azure-sql-edge:latest
     environment:
-      MSSQL_SA_PASSWORD:  Pass@word
       ACCEPT_EULA:        1
+      MSSQL_SA_PASSWORD:  Passw@rd
+      MSSQL_PID:          Developer
     cap_add:
       - SYS_PTRACE
     ports:
