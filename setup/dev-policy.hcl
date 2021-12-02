@@ -1,10 +1,7 @@
-# This section grants all access on "kv-v2/data/api-key*"
-path "kv-v2/data/api-key/*" {
-  capabilities = ["read", "update"]
+path "kv-v2/data/*" {
+  capabilities = ["create", "update", "read"]
 }
 
-# Even though we allowed secret/*, this line explicitly denies
-# secret/super-secret. This takes precedence.
-path "secret/super-secret" {
-  capabilities = ["deny"]
+path "kv-v2/data/foo" {
+  capabilities = ["read"]
 }

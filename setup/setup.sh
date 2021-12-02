@@ -22,4 +22,4 @@ vault write auth/approle/role/dev-role role_id=dev-role token_policies=dev-polic
 vault secrets enable kv-v2
 
 # Add our api key to our key-value store
-vault kv put kv-v2/data/api-key key="my-secret-key"
+curl -X PUT -H "X-Vault-Token: ${VAULT_DEV_ROOT_TOKEN_ID}" -d '{"data": {"api-key": "my-secret-key"}}' ${VAULT_ADDR}/v1/kv-v2/data/secrets/api
