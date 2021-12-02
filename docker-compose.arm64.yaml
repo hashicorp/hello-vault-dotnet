@@ -11,6 +11,10 @@ services:
     ports:
       - 8080:8080
 
+  # docker-compose.arm64.yaml uses mcr.microsoft.com/azure-sql-edge and
+  # mcr.microsoft.com/mssql-tools images in place of the default
+  # mcr.microsoft.com/mssql/server image. This is to work around mssql/server's
+  # incompatibility with arm64 architecture
   db:
     image: mcr.microsoft.com/azure-sql-edge:latest
     init: true
