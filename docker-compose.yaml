@@ -14,12 +14,12 @@ services:
     init: true
     environment:
       ACCEPT_EULA:  y
-      SA_PASSWORD:  DatabaseAdminPassword
+      SA_PASSWORD:  DatabaseAdminPassword1
     volumes:
       - type:    bind
         source:  setup/db-data
         target:  /home/db-data/.
-    command: [ "/opt/mssql-tools/bin/sqlcmd", "-S", "db", "-U", "sa", "-P", "DatabaseAdminPassword", "-i", "/home/db-data/populate.sql" ]
+    command: [ "/opt/mssql-tools/bin/sqlcmd", "-S", "db", "-U", "sa", "-P", "DatabaseAdminPassword1", "-i", "/home/db-data/populate.sql" ]
     ports:
       - 1433:1433
 

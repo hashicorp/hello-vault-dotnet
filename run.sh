@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # There are two docker-compose files provided:
 #   - docker-compose.arm64.yaml (to run on arm64 architectures / Apple M1)
 #   - docker-compose.yaml       (to run on all other architectures)
@@ -9,11 +11,11 @@
 # mcr.microsoft.com/mssql/server image. This is to work around mssql/server's
 # incompatibility with arm64 architecture
 if [[ `uname -m` == 'arm64' ]]; then
+    echo "Running docker-compose.arm64.yaml"
     docker compose -f docker-compose.arm64.yaml down
-    docker compose -f docker-compose.arm64.yaml build
     docker compose -f docker-compose.arm64.yaml up -d
 else
+    echo "Running docker-compose.yaml"
     docker compose -f docker-compose.yaml down
-    docker compose -f docker-compose.yaml build
     docker compose -f docker-compose.yaml up -d
 fi
