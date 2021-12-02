@@ -11,6 +11,7 @@ services:
 
   db:
     image: mcr.microsoft.com/azure-sql-edge:latest
+    init: true
     environment:
       ACCEPT_EULA:        1
       MSSQL_SA_PASSWORD:  Passw@rd
@@ -19,6 +20,15 @@ services:
       - SYS_PTRACE
     ports:
       - 1433:1433
+
+  db-data:
+    image: mcr.microsoft.com/mssql-tools
+    init: true
+    volumes:
+      - type:    bind
+        source:  setup/db-data/setup.sql
+        target:  /
+    command:   [ "/opt/mssql-tools/bin/sqlcmd", "-S", "http://db", "-U", "sa", "-P", "Passw@rd", "-d", "master", "-i", "/setup.sql" ]
 
   vault:
     image: vault:latest
