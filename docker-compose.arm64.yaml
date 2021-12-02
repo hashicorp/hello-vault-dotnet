@@ -16,7 +16,7 @@ services:
     init: true
     environment:
       ACCEPT_EULA:        y
-      MSSQL_SA_PASSWORD:  Passw@rd
+      MSSQL_SA_PASSWORD:  DatabaseAdminPassword
       MSSQL_PID:          Developer
     cap_add:
       - SYS_PTRACE
@@ -33,7 +33,7 @@ services:
     depends_on:
       db:
         condition: service_started
-    command: [ "/opt/mssql-tools/bin/sqlcmd", "-S", "db", "-U", "sa", "-P", "Passw@rd", "-i", "/home/db-data/populate.sql" ]
+    command: [ "/opt/mssql-tools/bin/sqlcmd", "-S", "db", "-U", "sa", "-P", "DatabaseAdminPassword", "-i", "/home/db-data/populate.sql" ]
 
   vault:
     image: vault:latest
