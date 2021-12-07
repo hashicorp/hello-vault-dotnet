@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+
+  api-service:
+    build: ApiProject/
+    depends_on:
+      db:
+        condition: service_started
+    ports:
+      - 8080:8080
+
+  db:
+    image: mcr.microsoft.com/mssql/server:latest
+    init: true
+    environment:
+      ACCEPT_EULA:  y
+      SA_PASSWORD:  DatabaseAdminPassword1
+    volumes:
+      - type:    bind
+        source:  setup/db-data
+        target:  /home/db-data/.
+    command: [ "/opt/mssql-tools/bin/sqlcmd", "-S", "db", "-U", "sa", "-P", "DatabaseAdminPassword1", "-i", "/home/db-data/populate.sql" ]
+    ports:
+      - 1433:1433
+
+  vault:
+    image: vault:latest
+    restart: always
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: root
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - 8200:8200

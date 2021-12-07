@@ -1,0 +1,50 @@
+version: "3.9"
+services:
+
+  api-service:
+    build: ApiProject/
+    depends_on:
+      db:
+        condition: service_started
+      db-data:
+        condition: service_completed_successfully
+    ports:
+      - 8080:8080
+
+  # docker-compose.arm64.yaml uses mcr.microsoft.com/azure-sql-edge and
+  # mcr.microsoft.com/mssql-tools images in place of the default
+  # mcr.microsoft.com/mssql/server image. This is to work around mssql/server's
+  # incompatibility with arm64 architecture
+  db:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    init: true
+    environment:
+      ACCEPT_EULA:        y
+      MSSQL_SA_PASSWORD:  DatabaseAdminPassword1
+      MSSQL_PID:          Developer
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - 1433:1433
+
+  db-data:
+    image: mcr.microsoft.com/mssql-tools
+    init: true
+    volumes:
+      - type:    bind
+        source:  setup/db-data
+        target:  /home/db-data/.
+    depends_on:
+      db:
+        condition: service_started
+    command: [ "/opt/mssql-tools/bin/sqlcmd", "-S", "db", "-U", "sa", "-P", "DatabaseAdminPassword1", "-i", "/home/db-data/populate.sql" ]
+
+  vault:
+    image: vault:latest
+    restart: always
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: root
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - 8200:8200
