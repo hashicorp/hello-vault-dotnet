@@ -5,12 +5,12 @@ services:
     build: ApiProject/
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
     ports:
       - 8080:8080
 
   db:
-    image: mcr.microsoft.com/mssql/server:latest
+    build: setup/database/
     init: true
     environment:
       ACCEPT_EULA:  y
@@ -19,9 +19,11 @@ services:
       - type:    bind
         source:  setup/db-data
         target:  /home/db-data/.
-    command: [ "/opt/mssql-tools/bin/sqlcmd", "-S", "db", "-U", "sa", "-P", "DatabaseAdminPassword1", "-i", "/home/db-data/populate.sql" ]
+    command: [ "bash", "-c", "( /home/db-data/populate.sh && touch /tmp/healthy ) & /opt/mssql/bin/sqlservr"  ]
     ports:
       - 1433:1433
+    healthcheck:
+      test: [ "bash", "-c", "[ -f /tmp/healthy ]" ]
 
   vault:
     image: vault:latest
