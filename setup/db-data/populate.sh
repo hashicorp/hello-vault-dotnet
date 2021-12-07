@@ -2,7 +2,7 @@
 
 for i in {1..60};
 do
-    /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -d master /home/db-data/populate.sql
+    /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "${SA_PASSWORD}" -d master /home/db-data/populate.sql
     if [ $? -eq 0 ]
     then
         echo "database is populated & ready!"
