@@ -10,7 +10,7 @@ services:
       - 8080:8080
 
   db:
-    build: setup/database/
+    image: mcr.microsoft.com/mssql/server:latest
     init: true
     environment:
       ACCEPT_EULA:  y
