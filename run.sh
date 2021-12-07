@@ -13,9 +13,11 @@ set -e
 if [[ `uname -m` == 'arm64' ]]; then
     echo "Running docker-compose.arm64.yaml"
     docker compose -f docker-compose.arm64.yaml down
+    docker compose -f docker-compose.arm64.yaml build
     docker compose -f docker-compose.arm64.yaml up -d
 else
     echo "Running docker-compose.yaml"
     docker compose -f docker-compose.yaml down
+    docker compose -f docker-compose.yaml build
     docker compose -f docker-compose.yaml up -d
 fi
