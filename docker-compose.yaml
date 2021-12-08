@@ -23,7 +23,7 @@ services:
     ports:
       - 1433:1433
     healthcheck:
-      test: [ "bash", "-c", "[ -f /tmp/healthy ]" ]
+      test: [ "CMD", "bash", "-c", "[ -f /tmp/healthy ]" ]
 
   vault:
     image: vault:latest
