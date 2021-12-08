@@ -4,8 +4,6 @@ services:
   api-service:
     build: ApiProject/
     depends_on:
-      db:
-        condition: service_started
       db-data:
         condition: service_completed_successfully
     ports:
