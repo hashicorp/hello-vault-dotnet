@@ -1,7 +1,10 @@
-path "kv-v2/data/*" {
-  capabilities = ["create", "update", "read"]
+# This section grants access to "kv-v2/data/api-key"
+path "kv-v2/data/api-key" {
+  capabilities = ["read", "update"]
 }
 
-path "kv-v2/data/foo" {
+# Allows read-only access to the secret path that will be used
+# by Vault to handle generation of dynamic database credentials.
+path "database/creds/dev-readonly" {
   capabilities = ["read"]
 }
