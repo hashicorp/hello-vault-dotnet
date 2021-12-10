@@ -1,14 +1,29 @@
 version: "3.9"
 services:
-
   api-service:
     build: ApiProject/
     depends_on:
-      db:
-        condition: service_healthy
+      - vault
+      - db
     ports:
       - 8080:8080
-
+    volumes:
+      - type: volume
+        source: trusted_orchestrator
+        target: /tmp
+    entrypoint: ./wait-for-vault.sh /tmp/role
+  # secure-service is a simulated 3rd party service that requires a specific header to get a 200 response
+  secure-service:
+    image: nginx:latest
+    volumes:
+      - type:      bind
+        source:    ./setup/nginx/default.conf.template
+        target:    /etc/nginx/templates/default.conf.template
+    ports:
+      - "1717:80"
+    environment:
+      # EXPECTED_API_KEY sets the expected value for incoming requests' header X-API-KEY
+      EXPECTED_API_KEY: my-secret-key
   db:
     image: mcr.microsoft.com/mssql/server:latest
     init: true
@@ -26,11 +41,18 @@ services:
       test: [ "CMD", "bash", "-c", "[ -f /tmp/healthy ]" ]
 
   vault:
-    image: vault:latest
-    restart: always
-    environment:
-      VAULT_DEV_ROOT_TOKEN_ID: root
+    build: ./setup/vault-server/
+    volumes:
+      - type:   volume
+        source: trusted_orchestrator
+        target: /tmp
+    ports:
+      - "8200:8200"
     cap_add:
       - IPC_LOCK
-    ports:
-      - 8200:8200
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: root
+      DB_HOST: "db"
+volumes:
+  dbdata:
+  trusted_orchestrator:

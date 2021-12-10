@@ -13,10 +13,6 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-		curl \
-        jq
-
-COPY entrypoint.sh /app/entrypoint.sh
+COPY wait-for-vault.sh /app
 COPY --from=build-env /app/out .
-ENTRYPOINT [ "/app/entrypoint.sh" ]
+RUN chmod +x /app/wait-for-vault.sh
