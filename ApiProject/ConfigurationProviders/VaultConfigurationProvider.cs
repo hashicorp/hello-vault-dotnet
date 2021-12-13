@@ -22,8 +22,6 @@ namespace WebApi
             _vaultSettings = vaultSettings;
             
             string wrappingToken = File.ReadAllText(_vaultSettings.TokenPath).Trim(); // placed here by a trusted orchestrator
-            
-            string roleId = File.ReadAllText(_vaultSettings.RoleIdPath).Trim();
 
             // We need to create two VaultClient objects for authenticating via AppRole. The first is for
             // using the unwrap utility. We need to initialize the client with the wrapping token.
@@ -39,7 +37,7 @@ namespace WebApi
 
             var secretId = secretIdData.Data["secret_id"]; // Grab the secret_id 
 
-            AppRoleAuthMethodInfo authMethodInfo = new AppRoleAuthMethodInfo(roleId, secretId.ToString());
+            AppRoleAuthMethodInfo authMethodInfo = new AppRoleAuthMethodInfo(_vaultSettings.RoleId, secretId.ToString());
             VaultClientSettings clientSettings = new VaultClientSettings(
                 _vaultSettings.Address,
                 authMethodInfo
@@ -50,8 +48,8 @@ namespace WebApi
 
         public override void Load()
         {
-            Secret<SecretData> secrets = _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(path: "/secrets/api", null).Result;
-            string apiKey = secrets.Data.Data["api-key"].ToString();
+            Secret<SecretData> secrets = _vaultClient.V1.Secrets.KeyValue.V2.ReadSecretAsync(path: "api-key", null).Result;
+            string apiKey = secrets.Data.Data["apiKey"].ToString();
             Data.Add("api:apikey", apiKey);
         }
     }

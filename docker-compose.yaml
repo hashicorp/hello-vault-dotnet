@@ -9,9 +9,9 @@ services:
       - 8080:8080
     volumes:
       - type: volume
-        source: trusted_orchestrator
+        source: trusted-orchestrator-volume
         target: /tmp
-    entrypoint: ./wait-for-vault.sh /tmp/role
+    entrypoint: ./wait-for-vault.sh
   # secure-service is a simulated 3rd party service that requires a specific header to get a 200 response
   secure-service:
     image: nginx:latest
@@ -32,7 +32,7 @@ services:
       SA_PASSWORD:  DatabaseAdminPassword1
     volumes:
       - type:    bind
-        source:  setup/db-data
+        source:  ./setup/db-data
         target:  /home/db-data/.
     command: [ "bash", "-c", "( /home/db-data/populate.sh && touch /tmp/healthy ) & /opt/mssql/bin/sqlservr"  ]
     ports:
@@ -44,7 +44,7 @@ services:
     build: ./setup/vault-server/
     volumes:
       - type:   volume
-        source: trusted_orchestrator
+        source: trusted-orchestrator-volume
         target: /tmp
     ports:
       - "8200:8200"
@@ -52,7 +52,20 @@ services:
       - IPC_LOCK
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: root
+      ORCHESTRATOR_TOKEN:      insecure_token
+      APPROLE_ROLE_ID:         demo-web-app
       DB_HOST: "db"
+  trusted-orchestrator:
+    build: ./setup/trusted-orchestrator
+    depends_on:
+      - vault
+    environment:
+      ORCHESTRATOR_TOKEN: insecure_token
+    volumes:
+      - type: volume
+        source: trusted-orchestrator-volume
+        target: /tmp
+
 volumes:
   dbdata:
-  trusted_orchestrator:
+  trusted-orchestrator-volume:
