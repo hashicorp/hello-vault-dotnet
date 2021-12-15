@@ -75,11 +75,11 @@ services:
       database:
         condition: service_started
     command: [
-	"/opt/mssql-tools/bin/sqlcmd",
-	"-S", "database",
-	"-U", "sa",
-	"-P", "DatabaseAdminPassword1",
-	"-i", "/home/database/populate.sql"
+      "/opt/mssql-tools/bin/sqlcmd",
+      "-S", "database",
+      "-U", "sa",
+      "-P", "DatabaseAdminPassword1",
+      "-i", "/home/database/populate.sql"
     ]
 
   # secure-service is a simulated 3rd party service that requires a specific header to get a 200 response

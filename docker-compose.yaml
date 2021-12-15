@@ -59,9 +59,9 @@ services:
         source:  setup/database
         target:  /home/database/.
     command: [
-	"bash",
-	"-c",
-	"( /home/database/populate.sh && touch /tmp/healthy ) & /opt/mssql/bin/sqlservr"
+      "bash",
+      "-c",
+      "( /home/database/populate.sh && touch /tmp/healthy ) & /opt/mssql/bin/sqlservr"
     ]
     ports:
       - 1433:1433
