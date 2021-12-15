@@ -1,30 +1,54 @@
 version: "3.9"
 services:
-  api-service:
+
+  app:
     build: ApiProject/
-    depends_on:
-      - vault
-      - db
-    ports:
-      - 8080:8080
     volumes:
-      - type: volume
+      - type:   volume
         source: trusted-orchestrator-volume
         target: /tmp
-    entrypoint: ./wait-for-vault.sh
-  # secure-service is a simulated 3rd party service that requires a specific header to get a 200 response
-  secure-service:
-    image: nginx:latest
-    volumes:
-      - type:      bind
-        source:    ./setup/nginx/default.conf.template
-        target:    /etc/nginx/templates/default.conf.template
     ports:
-      - "1717:80"
+      - 8080:8080
+    depends_on:
+      vault-server:
+        condition: service_healthy
+      trusted-orchestrator:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+      secure-service:
+        condition: service_healthy
+
+  vault-server:
+    build: ./setup/vault-server/
+    cap_add:
+      - IPC_LOCK
     environment:
-      # EXPECTED_API_KEY sets the expected value for incoming requests' header X-API-KEY
-      EXPECTED_API_KEY: my-secret-key
-  db:
+      VAULT_DEV_ROOT_TOKEN_ID: root
+      APPROLE_ROLE_ID:         demo-web-app
+      ORCHESTRATOR_TOKEN:      insecure_token
+      DATABASE_HOSTNAME:       database
+      DATABASE_PORT:           5432
+    ports:
+      - 8200:8200
+    depends_on:
+      database:
+        condition: service_healthy
+
+  trusted-orchestrator:
+    build: ./setup/trusted-orchestrator
+    environment:
+      VAULT_ADDRESS:      http://vault-server:8200
+      ORCHESTRATOR_TOKEN: insecure_token
+    volumes:
+      - type:   volume
+        source: trusted-orchestrator-volume
+        target: /tmp
+    depends_on:
+      vault-server:
+        condition: service_healthy
+
+  database:
     image: mcr.microsoft.com/mssql/server:latest
     init: true
     environment:
@@ -32,40 +56,40 @@ services:
       SA_PASSWORD:  DatabaseAdminPassword1
     volumes:
       - type:    bind
-        source:  ./setup/db-data
-        target:  /home/db-data/.
-    command: [ "bash", "-c", "( /home/db-data/populate.sh && touch /tmp/healthy ) & /opt/mssql/bin/sqlservr"  ]
+        source:  setup/database
+        target:  /home/database/.
+    command: [
+      "bash",
+      "-c",
+      "( /home/database/populate.sh && touch /tmp/healthy ) & /opt/mssql/bin/sqlservr"
+    ]
     ports:
       - 1433:1433
     healthcheck:
-      test: [ "CMD", "bash", "-c", "[ -f /tmp/healthy ]" ]
+      test:         bash -c "[ -f /tmp/healthy ]"
+      start_period: 1s
+      interval:     1s
+      timeout:      1s
+      retries:      30
 
-  vault:
-    build: ./setup/vault-server/
+  # secure-service is a simulated 3rd party service that requires a specific header to get a 200 response
+  secure-service:
+    image: nginx:latest
+    environment:
+      EXPECTED_API_KEY: my-secret-key # sets the expected value for incoming requests' header X-API-KEY
     volumes:
-      - type:   volume
-        source: trusted-orchestrator-volume
-        target: /tmp
+      - type:   bind
+        source: ./setup/secure-service/default.conf.template
+        target: /etc/nginx/templates/default.conf.template
     ports:
-      - "8200:8200"
-    cap_add:
-      - IPC_LOCK
-    environment:
-      VAULT_DEV_ROOT_TOKEN_ID: root
-      ORCHESTRATOR_TOKEN:      insecure_token
-      APPROLE_ROLE_ID:         demo-web-app
-      DB_HOST: "db"
-  trusted-orchestrator:
-    build: ./setup/trusted-orchestrator
-    depends_on:
-      - vault
-    environment:
-      ORCHESTRATOR_TOKEN: insecure_token
-    volumes:
-      - type: volume
-        source: trusted-orchestrator-volume
-        target: /tmp
+      - 1717:80
+    healthcheck:
+      test:         curl --fail -s http://localhost/healthcheck || exit 1
+      start_period: 1s
+      interval:     1s
+      timeout:      1s
+      retries:      30
 
 volumes:
-  dbdata:
   trusted-orchestrator-volume:
+
