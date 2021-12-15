@@ -15,7 +15,7 @@ namespace WebApi
     public class VaultConfigurationProvider : ConfigurationProvider
     {    
         private VaultSettings _vaultSettings;
-        private VaultClient _vaultClient;
+        private IVaultClient _vaultClient;
 
         public VaultConfigurationProvider(VaultSettings vaultSettings)
         {
