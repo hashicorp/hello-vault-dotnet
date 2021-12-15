@@ -11,18 +11,18 @@ namespace WebApi
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class StaticController : ControllerBase
+    public class PaymentController : ControllerBase
     {
         private const string secureApiEndpoint = "http://127.0.0.1:1717/api";
         private readonly IConfiguration _config;
 
-        public StaticController(IConfiguration config)
+        public PaymentController(IConfiguration config)
         {
             _config = config;
         }
 
-        [HttpGet]
-        public string GetApiInfo()
+        [HttpPost]
+        public string CreatePayment()
         {
             string apiKey = _config.GetValue<string>("api:apikey");
 
