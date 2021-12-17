@@ -23,15 +23,18 @@ namespace WebApi
             
             string wrappingToken = File.ReadAllText(_vaultSettings.TokenPath).Trim(); // placed here by a trusted orchestrator
 
-            // We need to create two VaultClient objects for authenticating via AppRole. The first is for
-            // using the unwrap utility. We need to initialize the client with the wrapping token.
+            // VaultSharp requires a VaultClient object in order to unwrap a token and we can't
+            // reuse the client b/c it's already been intialized with the TokenAuthMethodInfo.
+            // So, in this case we require two VaultClient objects for logging in
             IAuthMethodInfo wrappedTokenAuthMethod = new TokenAuthMethodInfo(wrappingToken);
             var vaultClientSettingsForUnwrapping = new VaultClientSettings(_vaultSettings.Address, wrappedTokenAuthMethod);
 
             IVaultClient vaultClientForUnwrapping = new VaultClient(vaultClientSettingsForUnwrapping);
 
             // We pass null here instead of the wrapping token to avoid depleting its single usage
-            // given that we already initialized our client with the wrapping token
+            // given that we already initialized our client with the wrapping token.
+            // This is the work around for the fact that VaultSharp requires a valid wrapping token to initialize 
+            // the VaultClient. 
             Secret<Dictionary<string, object>> secretIdData =  vaultClientForUnwrapping.V1.System
                 .UnwrapWrappedResponseDataAsync<Dictionary<string, object>>(null).Result; 
 
