@@ -6,7 +6,6 @@ namespace WebApi
     {
         public string Address { get; set; }
         public string RoleId { get; set; }
-        public string MountPath { get; set; }
         public string TokenPath { get; set; }
     }
 }
