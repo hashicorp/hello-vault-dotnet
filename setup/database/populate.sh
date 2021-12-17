@@ -3,11 +3,11 @@
 for i in $(seq 1 60)
 do
     if /opt/mssql-tools/bin/sqlcmd \
-        -S localhost \
-        -U sa \
-        -P "${SA_PASSWORD}" \
-        -d master \
-        -i /home/database/populate.sql;
+            -S localhost \
+            -U sa \
+            -P "${SA_PASSWORD}" \
+            -d master \
+            -i /home/database/populate.sql;
     then
         echo "database is populated & ready!"
         exit 0
