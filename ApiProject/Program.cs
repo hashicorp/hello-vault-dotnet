@@ -30,7 +30,6 @@ namespace WebApi
                         var vaultSettings = builtConfig.GetSection("Vault");
                         settings.Address = vaultSettings["Address"];
                         settings.RoleId = vaultSettings["RoleId"];
-                        settings.MountPath = vaultSettings["MountPath"];
                         settings.TokenPath = vaultSettings["TokenPath"];
                     });
                 })
