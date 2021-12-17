@@ -5,8 +5,8 @@ This is a sample application that demonstrates how to authenticate to and retrie
 
 1. [`docker`][docker] to easily run the application in the same environment regardless of your local operating system
 2. [`docker compose`][docker-compose] to easily set up all the components of the demo (the application's web server, the Vault server, the database, etc.) all at once
-3. [`curl`] to test our endpoints
-4. [`jq`] (optional) for prettier `JSON` output
+3. [`curl`][curl] to test our endpoints
+4. [`jq`][jq] (optional) for prettier `JSON` output
 
 ## Try it out
 
