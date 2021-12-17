@@ -10,7 +10,7 @@ set -e
 # mcr.microsoft.com/mssql-tools images in place of the default
 # mcr.microsoft.com/mssql/server image. This is to work around mssql/server's
 # incompatibility with arm64 architecture
-if [[ `uname -m` == 'arm64' ]]; then
+if [ "$(uname -m)" = "arm64" ]; then
     echo "Running docker-compose.arm64.yaml"
     docker compose -f docker-compose.arm64.yaml down
     docker compose -f docker-compose.arm64.yaml build
