@@ -14,6 +14,8 @@ namespace app.Vault
 
         public Vault( VaultSettings settings )
         {
+            _settings = settings;
+
             _client = AppRoleAuthClient( settings );
         }
 
@@ -37,8 +39,8 @@ namespace app.Vault
             // it needs to be intialized with a different TokenAuthMethodInfo
             IVaultClient vaultClientForUnwrapping = new VaultClient(
                 new VaultClientSettings(
-                    settings.Address,
-                    new TokenAuthMethodInfo( wrappingToken )
+                    vaultServerUriWithPort: settings.Address,
+                    authMethodInfo:         new TokenAuthMethodInfo( wrappingToken )
                 )
             );
 
@@ -47,22 +49,27 @@ namespace app.Vault
             // requires a valid wrapping token to initialize the VaultClient.
             string appRoleAuthSecretId
                 = vaultClientForUnwrapping.V1.System
-                    .UnwrapWrappedResponseDataAsync< Dictionary< string, object > >( null )
+                    .UnwrapWrappedResponseDataAsync< Dictionary< string, object > >( tokenId: null )
                         .Result.Data[ "secret_id" ]
                             .ToString();
 
-            AppRoleAuthMethodInfo authMethodInfo = new AppRoleAuthMethodInfo(
-                settings.AppRoleAuthRoleId,
-                appRoleAuthSecretId
+            AppRoleAuthMethodInfo appRoleAuth = new AppRoleAuthMethodInfo(
+                roleId:   settings.AppRoleAuthRoleId,
+                secretId: appRoleAuthSecretId
             );
 
-            return new VaultClient( new VaultClientSettings( settings.Address, authMethodInfo ) );
+            return new VaultClient(
+                new VaultClientSettings(
+                    vaultServerUriWithPort: settings.Address,
+                    authMethodInfo:         appRoleAuth
+                )
+            );
         }
 
         public string GetSecretApiKey()
         {
             Secret< SecretData > secret = _client.V1.Secrets.KeyValue.V2.ReadSecretAsync(
-                path: _settings.ApiKeyPath // path within kv-v2/ (e.g. "api-key")
+                path: _settings.ApiKeyPath // vault path within kv-v2/ (e.g. "api-key")
             ).Result;
 
             return secret.Data.Data[ _settings.ApiKeyDescriptor /* secret name */ ].ToString();

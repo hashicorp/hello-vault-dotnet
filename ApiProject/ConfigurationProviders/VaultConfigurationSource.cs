@@ -5,14 +5,15 @@ namespace WebApi
 {
     public class VaultConfigurationSource : IConfigurationSource
     {
-        private VaultSettings _vaultSettings;
+        private app.Vault.VaultSettings _settings;
 
         public VaultConfigurationSource(Action<VaultSettings> vaultSettings)
         {
-            _vaultSettings = new VaultSettings();
-            vaultSettings.Invoke(_vaultSettings);
+            _settings = new VaultSettings();
+            vaultSettings.Invoke(_settings);
         }
+
         public IConfigurationProvider Build(IConfigurationBuilder builder) =>
-            new VaultConfigurationProvider(_vaultSettings);
+            new VaultConfigurationProvider(_settings);
     }
 }
