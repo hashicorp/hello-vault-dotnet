@@ -1,6 +1,6 @@
 namespace app.Vault
 {
-    public class VaultSettings
+    public class VaultWrapperSettings
     {
         public string Address { get; set; }
 
