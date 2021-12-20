@@ -8,7 +8,7 @@ services:
         source: trusted-orchestrator-volume
         target: /tmp
     ports:
-      - 8080:8080
+      - 80:80
     depends_on:
       vault-server:
         condition: service_healthy
@@ -28,7 +28,7 @@ services:
       APPROLE_ROLE_ID:         demo-web-app
       ORCHESTRATOR_TOKEN:      insecure_token
       DATABASE_HOSTNAME:       database
-      DATABASE_PORT:           5432
+      DATABASE_PORT:           1433
     ports:
       - 8200:8200
     depends_on:
@@ -52,8 +52,10 @@ services:
     image: mcr.microsoft.com/mssql/server:latest
     init: true
     environment:
-      ACCEPT_EULA:  y
-      SA_PASSWORD:  DatabaseAdminPassword1
+      ACCEPT_EULA:        y
+      DATABASE_HOSTNAME:  localhost
+      DATABASE_PORT:      1433
+      SA_PASSWORD:        DatabaseAdminPassword1
     volumes:
       - type:    bind
         source:  setup/database
@@ -82,7 +84,7 @@ services:
         source: ./setup/secure-service/default.conf.template
         target: /etc/nginx/templates/default.conf.template
     ports:
-      - 1717:80
+      - 8080:80
     healthcheck:
       test:         curl --fail -s http://localhost/healthcheck || exit 1
       start_period: 1s
@@ -92,4 +94,3 @@ services:
 
 volumes:
   trusted-orchestrator-volume:
-
