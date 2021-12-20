@@ -1,20 +1,16 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using VaultSharp;
-using VaultSharp.V1.AuthMethods;
 using VaultSharp.V1.AuthMethods.AppRole;
 using VaultSharp.V1.AuthMethods.Token;
 using VaultSharp.V1.Commons;
-using VaultSharp.V1.SecretsEngines;
-using Microsoft.Extensions.Configuration;
 
 namespace app.Vault
 {
     public class Vault
     {
         protected IVaultClient _client;
+        protected readonly VaultSettings _settings;
 
         public Vault( VaultSettings settings )
         {
@@ -22,16 +18,16 @@ namespace app.Vault
         }
 
         /// <summary>
-        /// A combination of a RoleID and a SecretID is required to log into Vault
-        /// with AppRole authentication method. The SecretID is a value that needs
-        /// to be protected, so instead of the app having knowledge of the SecretID
-        /// directly, we have a trusted orchestrator (simulated with a script here)
+        /// A combination of a role id and a secret id is required to log into Vault
+        /// with AppRole authentication method. The secret id is a value that needs
+        /// to be protected, so instead of the app having knowledge of the secret id
+        /// directly, we have a trusted orchestrator (simulated with a container)
         /// give the app access to a short-lived response-wrapping token.
-        ///
-        /// ref: https://www.vaultproject.io/docs/concepts/response-wrapping
-        /// ref: https://learn.hashicorp.com/tutorials/vault/secure-introduction?in=vault/app-integration#trusted-orchestrator
-        /// ref: https://learn.hashicorp.com/tutorials/vault/approle-best-practices?in=vault/auth-methods#secretid-delivery-best-practices
         /// </summary>
+        ///
+        /// <seealso href="https://www.vaultproject.io/docs/concepts/response-wrapping"/>
+        /// <seealso href="https://learn.hashicorp.com/tutorials/vault/secure-introduction?in=vault/app-integration#trusted-orchestrator"/>
+        /// <seealso href="https://learn.hashicorp.com/tutorials/vault/approle-best-practices?in=vault/auth-methods#secretid-delivery-best-practices"/>
         private IVaultClient AppRoleAuthClient( VaultSettings settings )
         {
             // The wrapping token is placed here by our trusted orchestrator
@@ -62,8 +58,14 @@ namespace app.Vault
 
             return new VaultClient( new VaultClientSettings( settings.Address, authMethodInfo ) );
         }
+
+        public string GetSecretApiKey()
+        {
+            Secret< SecretData > secret = _client.V1.Secrets.KeyValue.V2.ReadSecretAsync(
+                path: _settings.ApiKeyPath // path within kv-v2/ (e.g. "api-key")
+            ).Result;
+
+            return secret.Data.Data[ _settings.ApiKeyDescriptor /* secret name */ ].ToString();
+        }
     }
-
-
-
 }
