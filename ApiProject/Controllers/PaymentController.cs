@@ -13,7 +13,7 @@ namespace WebApi
     [Route("api/[controller]")]
     public class PaymentController : ControllerBase
     {
-        private const string secureApiEndpoint = "http://127.0.0.1:1717/api";
+        private const string secureApiEndpoint = "http://127.0.0.1:80/api";
         private readonly IConfiguration _config;
 
         public PaymentController(IConfiguration config)
@@ -32,6 +32,7 @@ namespace WebApi
             HttpWebResponse apiResponse = (HttpWebResponse)apiRequest.GetResponse();
 
             StreamReader streamResponse = new StreamReader(apiResponse.GetResponseStream());
+
             string stringResponse = streamResponse.ReadToEnd();
             return stringResponse;
         }

@@ -3,7 +3,7 @@
 for i in $(seq 1 60)
 do
     if /opt/mssql-tools/bin/sqlcmd \
-            -S localhost \
+            -S "${DATABASE_HOSTNAME}" \
             -U sa \
             -P "${SA_PASSWORD}" \
             -d master \

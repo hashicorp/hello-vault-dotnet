@@ -67,20 +67,17 @@ services:
   database-data:
     image: mcr.microsoft.com/mssql-tools
     init: true
+    environment:
+      DATABASE_HOSTNAME:  database
+      SA_PASSWORD:        DatabaseAdminPassword1
     volumes:
       - type:    bind
         source:  setup/database
         target:  /home/database/.
+    command: [  "/home/database/populate.sh" ]
     depends_on:
       database:
         condition: service_started
-    command: [
-      "/opt/mssql-tools/bin/sqlcmd",
-      "-S", "database",
-      "-U", "sa",
-      "-P", "DatabaseAdminPassword1",
-      "-i", "/home/database/populate.sql"
-    ]
 
   # secure-service is a simulated 3rd party service that requires a specific header to get a 200 response
   secure-service:
@@ -102,4 +99,3 @@ services:
 
 volumes:
   trusted-orchestrator-volume:
-
