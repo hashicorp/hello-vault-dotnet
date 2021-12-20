@@ -32,7 +32,6 @@ namespace WebApi
             HttpWebResponse apiResponse = (HttpWebResponse)apiRequest.GetResponse();
 
             StreamReader streamResponse = new StreamReader(apiResponse.GetResponseStream());
-
             string stringResponse = streamResponse.ReadToEnd();
             return stringResponse;
         }
