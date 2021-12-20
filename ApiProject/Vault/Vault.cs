@@ -40,7 +40,7 @@ namespace app.Vault
             IVaultClient vaultClientForUnwrapping = new VaultClient(
                 new VaultClientSettings(
                     vaultServerUriWithPort: settings.Address,
-                    authMethodInfo:         new TokenAuthMethodInfo( wrappingToken )
+                    authMethodInfo:         new TokenAuthMethodInfo( vaultToken: wrappingToken )
                 )
             );
 
@@ -69,10 +69,10 @@ namespace app.Vault
         public string GetSecretApiKey()
         {
             Secret< SecretData > secret = _client.V1.Secrets.KeyValue.V2.ReadSecretAsync(
-                path: _settings.ApiKeyPath // vault path within kv-v2/ (e.g. "api-key")
+                path: _settings.ApiKeyPath // vault path within kv-v2/ (e.g. "api-key", not "kv-v2/api-key" )
             ).Result;
 
-            return secret.Data.Data[ _settings.ApiKeyDescriptor /* secret name */ ].ToString();
+            return secret.Data.Data[ _settings.ApiKeyDescriptor ].ToString();
         }
     }
 }
