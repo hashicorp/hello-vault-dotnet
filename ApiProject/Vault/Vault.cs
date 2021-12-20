@@ -7,12 +7,12 @@ using VaultSharp.V1.Commons;
 
 namespace app.Vault
 {
-    public class Vault
+    public class VaultWrapper
     {
         protected IVaultClient _client;
-        protected readonly VaultSettings _settings;
+        protected readonly VaultWrapperSettings _settings;
 
-        public Vault( VaultSettings settings )
+        public VaultWrapper( VaultWrapperSettings settings )
         {
             _settings = settings;
 
@@ -30,7 +30,7 @@ namespace app.Vault
         /// <seealso href="https://www.vaultproject.io/docs/concepts/response-wrapping"/>
         /// <seealso href="https://learn.hashicorp.com/tutorials/vault/secure-introduction?in=vault/app-integration#trusted-orchestrator"/>
         /// <seealso href="https://learn.hashicorp.com/tutorials/vault/approle-best-practices?in=vault/auth-methods#secretid-delivery-best-practices"/>
-        private IVaultClient AppRoleAuthClient( VaultSettings settings )
+        private IVaultClient AppRoleAuthClient( VaultWrapperSettings settings )
         {
             // The wrapping token is placed here by our trusted orchestrator
             string wrappingToken = File.ReadAllText( settings.AppRoleAuthSecretIdFile ).Trim();
