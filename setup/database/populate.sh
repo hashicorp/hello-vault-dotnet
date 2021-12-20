@@ -1,9 +1,9 @@
 #!/bin/sh
 
-for i in $(seq 1 60)
+for i in $(seq 1 30)
 do
     if /opt/mssql-tools/bin/sqlcmd \
-            -S localhost \
+            -S "tcp:${DATABASE_HOSTNAME},${DATABASE_PORT}" \
             -U sa \
             -P "${SA_PASSWORD}" \
             -d master \
@@ -17,5 +17,5 @@ do
     fi
 done
 
-echo "error: could not populate the database after 60 seconds"
+echo "error: could not populate the database after 30 iterations"
 exit 1
