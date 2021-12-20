@@ -28,7 +28,7 @@ services:
       APPROLE_ROLE_ID:         demo-web-app
       ORCHESTRATOR_TOKEN:      insecure_token
       DATABASE_HOSTNAME:       database
-      DATABASE_PORT:           5432
+      DATABASE_PORT:           1433
     ports:
       - 8200:8200
     depends_on:
@@ -69,6 +69,7 @@ services:
     init: true
     environment:
       DATABASE_HOSTNAME:  database
+      DATABASE_PORT:      1433
       SA_PASSWORD:        DatabaseAdminPassword1
     volumes:
       - type:    bind
