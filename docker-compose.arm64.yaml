@@ -8,7 +8,7 @@ services:
         source: trusted-orchestrator-volume
         target: /tmp
     ports:
-      - 8080:8080
+      - 80:80
     depends_on:
       vault-server:
         condition: service_healthy
@@ -90,7 +90,7 @@ services:
         source: ./setup/secure-service/default.conf.template
         target: /etc/nginx/templates/default.conf.template
     ports:
-      - 1717:80
+      - 8080:80
     healthcheck:
       test:         curl --fail -s http://localhost/healthcheck || exit 1
       start_period: 1s
