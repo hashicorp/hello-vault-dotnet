@@ -12,7 +12,7 @@ namespace app.Controllers
     {
         private const string secureServiceEndpoint = "http://secure-service/api";
 
-        VaultWrapper _vault;
+        private VaultWrapper _vault;
 
         public PaymentsController( VaultWrapper vault )
         {
@@ -26,13 +26,13 @@ namespace app.Controllers
             // fetch the secret api key from Vault
             string apiKey = _vault.GetSecretApiKey();
 
-            HttpWebRequest request = ( HttpWebRequest ) WebRequest.Create( secureServiceEndpoint );
+            HttpWebRequest request = WebRequest.Create( secureServiceEndpoint ) as HttpWebRequest;
 
             // add the secret api key to the request header
             request.Headers[ "x-api-key" ] = apiKey;
 
             // forward the response back to the caller
-            using ( HttpWebResponse response = ( HttpWebResponse ) request.GetResponse() )
+            using ( HttpWebResponse response = request.GetResponse() as HttpWebResponse )
             {
                 using ( StreamReader sr = new StreamReader( response.GetResponseStream() ) )
                 {
