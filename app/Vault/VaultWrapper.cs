@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using VaultSharp;
 using VaultSharp.V1.AuthMethods.AppRole;
@@ -77,20 +78,25 @@ namespace app.Vault
             return secret.Data.Data[ _settings.ApiKeyDescriptor ].ToString();
         }
 
-        public void GetDbConnectionString()
+        public string GetDbConnectionString()
         {
-            string userId = string.Empty;
-            string password = string.Empty;
-
             Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials =
                 _client.V1.Secrets.Database.GetCredentialsAsync(
                 _settings.DynamicSecretRole).Result;
 
-            userId = dynamicDatabaseCredentials.Data.Username;
-            password = dynamicDatabaseCredentials.Data.Password;
+            string userId = dynamicDatabaseCredentials.Data.Username;
+            string password = dynamicDatabaseCredentials.Data.Password;
+            
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
 
-            Console.WriteLine("USER ID: " + userId);
-            Console.WriteLine("PASSWORD: " + password);
+            // To Do: Get from appsettings or env var
+            builder.DataSource = "database";
+            builder.InitialCatalog = "example";
+
+            builder.UserID = userId;
+            builder.Password = password;
+
+            return builder.ConnectionString;
         }
     }
 }

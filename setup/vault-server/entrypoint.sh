@@ -84,23 +84,22 @@ vault kv put kv-v2/api-key apiKey=my-secret-key
 vault secrets enable database
 
 # configure Vault's connection to our db, in this case PostgreSQL
-# ref: https://www.vaultproject.io/api/secret/databases/postgresql
-vault write database/config/my-postgresql-database \
-    plugin_name=postgresql-database-plugin \
+# ref: https://www.vaultproject.io/docs/secrets/databases/mssql
+vault write database/config/example \
+    plugin_name=mssql-database-plugin \
     allowed_roles="dev-readonly" \
-    connection_url="postgresql://{{username}}:{{password}}@${DATABASE_HOSTNAME}:${DATABASE_PORT}/postgres?sslmode=disable" \
-    username="vault_db_user" \
-    password="vault_db_password"
-
-# rotate the password for 'vault_db_user', ensures the user is only accessible by Vault itself
-vault write -force database/config/my-postgresql-database
+    connection_url='sqlserver://{{username}}:{{password}}@database:1433' \
+    username="vault-VaultSample" \
+    password="DatabaseAdminPassword2"
 
 # allow Vault to create roles dynamically with the same privileges as the 'readonly' role created in our database's init scripts
 vault write database/roles/dev-readonly \
-    db_name=my-postgresql-database \
-    creation_statements="CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; GRANT readonly TO \"{{name}}\";" \
-    default_ttl="3m" \
-    max_ttl="7m"  # artificially low to demonstrate credential renewal logic
+    db_name=example \
+    creation_statements="CREATE LOGIN [{{name}}] WITH PASSWORD = '{{password}}';\
+        CREATE USER [{{name}}] FOR LOGIN [{{name}}]; \
+        ALTER ROLE [vault_datareader] ADD MEMBER [{{name}}];" \
+    default_ttl="1h" \
+    max_ttl="24h"
 
 # this container is now healthy
 touch /tmp/healthy

@@ -21,7 +21,8 @@ namespace app
                 AppRoleAuthRoleId       = "demo-web-app",
                 AppRoleAuthSecretIdFile = "/tmp/secret",
                 ApiKeyPath              = "api-key",
-                ApiKeyDescriptor        = "apiKey"
+                ApiKeyDescriptor        = "apiKey",
+                DynamicSecretRole       = "dev-readonly"
             }));
         }
 
