@@ -8,13 +8,13 @@ namespace app.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PaymentController : ControllerBase
+    public class PaymentsController : ControllerBase
     {
         private const string secureApiEndpoint = "http://secure-service/api";
 
         VaultWrapper _vault;
 
-        public PaymentController( VaultWrapper vault )
+        public PaymentsController( VaultWrapper vault )
         {
             _vault = vault;
         }
