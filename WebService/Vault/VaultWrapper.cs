@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using System.IO;
 using VaultSharp;
 using VaultSharp.V1.AuthMethods.AppRole;
@@ -69,7 +70,8 @@ namespace WebService.Vault
                 path: _settings.ApiKeyPath // vault path within kv-v2/ (e.g. "api-key", not "kv-v2/api-key" )
             ).Result;
 
-            return secret.Data.Data[ _settings.ApiKeyDescriptor ].ToString();
+            string apiKey = secret.Data.Data[ _settings.ApiKeyDescriptor ].ToString();
+            return apiKey;
         }
     }
 }

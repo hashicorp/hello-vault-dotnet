@@ -2,7 +2,7 @@ version: "3.9"
 services:
 
   app:
-    build: app/
+    build: WebService/
     volumes:
       - type:   volume
         source: trusted-orchestrator-volume
