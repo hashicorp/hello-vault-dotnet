@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace WebApi
+using app.Vault;
+
+namespace app
 {
     public class Startup
     {
@@ -17,6 +14,15 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // TODO: initialize the parameters from environment variables instead
+            services.AddSingleton< VaultWrapper >( new VaultWrapper( new VaultWrapperSettings{
+                Address                 = "http://vault-server:8200",
+                AppRoleAuthRoleId       = "demo-web-app",
+                AppRoleAuthSecretIdFile = "/tmp/secret",
+                ApiKeyPath              = "api-key",
+                ApiKeyDescriptor        = "apiKey"
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

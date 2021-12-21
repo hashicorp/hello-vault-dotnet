@@ -1,30 +1,28 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 
-namespace WebApi
+using app.Vault;
+
+namespace app.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class PaymentController : ControllerBase
     {
         private const string secureApiEndpoint = "http://secure-service/api";
-        private readonly IConfiguration _config;
 
-        public PaymentController(IConfiguration config)
+        VaultWrapper _vault;
+
+        public PaymentController( VaultWrapper vault )
         {
-            _config = config;
+            _vault = vault;
         }
 
         [HttpPost]
         public string CreatePayment()
         {
-            string apiKey = _config.GetValue<string>("api:apikey");
+            string apiKey = _vault.GetSecretApiKey();
 
             HttpWebRequest apiRequest = (HttpWebRequest)WebRequest.Create(secureApiEndpoint);
             apiRequest.Headers["x-api-key"] = apiKey;
