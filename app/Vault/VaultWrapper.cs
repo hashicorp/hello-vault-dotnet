@@ -57,12 +57,14 @@ namespace app.Vault
                 secretId: appRoleAuthSecretId
             );
 
-            return new VaultClient(
+            IVaultClient client = new VaultClient(
                 new VaultClientSettings(
                     vaultServerUriWithPort: settings.Address,
                     authMethodInfo: appRoleAuth
                 )
             );
+
+            return client;
         }
 
         public string GetSecretApiKey()
