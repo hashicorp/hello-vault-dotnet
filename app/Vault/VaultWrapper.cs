@@ -36,12 +36,10 @@ namespace app.Vault
 
             // We can't reuse the default VaultClient instance for unwrapping because
             // it needs to be intialized with a different TokenAuthMethodInfo
-            IVaultClient vaultClientForUnwrapping = new VaultClient(
-                new VaultClientSettings(
-                    vaultServerUriWithPort: settings.Address,
-                    authMethodInfo: new TokenAuthMethodInfo( vaultToken: wrappingToken )
-                )
-            );
+            IVaultClient vaultClientForUnwrapping = new VaultClient( new VaultClientSettings(
+                settings.Address,
+                new TokenAuthMethodInfo( vaultToken: wrappingToken )
+            ));
 
             // We pass null here instead of the wrapping token to avoid depleting
             // the token's single use. This is to work around the fact that VaultSharp
@@ -57,12 +55,10 @@ namespace app.Vault
                 secretId: appRoleAuthSecretId
             );
 
-            IVaultClient client = new VaultClient(
-                new VaultClientSettings(
-                    vaultServerUriWithPort: settings.Address,
-                    authMethodInfo: appRoleAuth
-                )
-            );
+            IVaultClient client = new VaultClient( new VaultClientSettings(
+                settings.Address,
+                appRoleAuth
+            ));
 
             return client;
         }
@@ -73,7 +69,7 @@ namespace app.Vault
                 path: _settings.ApiKeyPath // vault path within kv-v2/ (e.g. "api-key", not "kv-v2/api-key" )
             ).Result;
 
-            return secret.Data.Data[_settings.ApiKeyDescriptor].ToString();
+            return secret.Data.Data[ _settings.ApiKeyDescriptor ].ToString();
         }
     }
 }
