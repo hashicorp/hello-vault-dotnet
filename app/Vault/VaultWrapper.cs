@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using VaultSharp;
 using VaultSharp.V1.AuthMethods.AppRole;
 using VaultSharp.V1.AuthMethods.Token;
 using VaultSharp.V1.Commons;
+using VaultSharp.V1.SecretsEngines;
 
 namespace app.Vault
 {
@@ -73,6 +75,22 @@ namespace app.Vault
             ).Result;
 
             return secret.Data.Data[ _settings.ApiKeyDescriptor ].ToString();
+        }
+
+        public void GetDbConnectionString()
+        {
+            string userId = string.Empty;
+            string password = string.Empty;
+
+            Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials =
+                _client.V1.Secrets.Database.GetCredentialsAsync(
+                _settings.DynamicSecretRole).Result;
+
+            userId = dynamicDatabaseCredentials.Data.Username;
+            password = dynamicDatabaseCredentials.Data.Password;
+
+            Console.WriteLine("USER ID: " + userId);
+            Console.WriteLine("PASSWORD: " + password);
         }
     }
 }

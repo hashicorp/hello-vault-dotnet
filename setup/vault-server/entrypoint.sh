@@ -75,6 +75,33 @@ vault secrets enable -path=kv-v2 kv-v2
 # seed the kv-v2 store with an entry our web app will use
 vault kv put kv-v2/api-key apiKey=my-secret-key
 
+#####################################
+########## DYNAMIC SECRETS ##########
+#####################################
+
+# enable a database secrets engine
+# ref: https://www.vaultproject.io/docs/secrets/databases
+vault secrets enable database
+
+# configure Vault's connection to our db, in this case PostgreSQL
+# ref: https://www.vaultproject.io/api/secret/databases/postgresql
+vault write database/config/my-postgresql-database \
+    plugin_name=postgresql-database-plugin \
+    allowed_roles="dev-readonly" \
+    connection_url="postgresql://{{username}}:{{password}}@${DATABASE_HOSTNAME}:${DATABASE_PORT}/postgres?sslmode=disable" \
+    username="vault_db_user" \
+    password="vault_db_password"
+
+# rotate the password for 'vault_db_user', ensures the user is only accessible by Vault itself
+vault write -force database/config/my-postgresql-database
+
+# allow Vault to create roles dynamically with the same privileges as the 'readonly' role created in our database's init scripts
+vault write database/roles/dev-readonly \
+    db_name=my-postgresql-database \
+    creation_statements="CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; GRANT readonly TO \"{{name}}\";" \
+    default_ttl="3m" \
+    max_ttl="7m"  # artificially low to demonstrate credential renewal logic
+
 # this container is now healthy
 touch /tmp/healthy
 
