@@ -2,7 +2,7 @@ version: "3.9"
 services:
 
   app:
-    build: ApiProject/
+    build: app/
     volumes:
       - type:   volume
         source: trusted-orchestrator-volume
