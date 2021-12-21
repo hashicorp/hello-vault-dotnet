@@ -9,8 +9,8 @@ namespace WebService.Vault
         public string AppRoleAuthRoleId { get; set; }
         public string AppRoleAuthSecretIdFile { get; set; }
 
-        // Location and name of the api key secret within Vault
+        // Location and field name of the api key secret within Vault
         public string ApiKeyPath { get; set; }
-        public string ApiKeyDescriptor { get; set; }
+        public string ApiKeyField { get; set; }
     }
 }

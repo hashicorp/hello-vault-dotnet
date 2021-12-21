@@ -70,7 +70,7 @@ namespace WebService.Vault
                 path: _settings.ApiKeyPath // vault path within kv-v2/ (e.g. "api-key", not "kv-v2/api-key" )
             ).Result;
 
-            string apiKey = secret.Data.Data[ _settings.ApiKeyDescriptor ].ToString();
+            string apiKey = secret.Data.Data[ _settings.ApiKeyField ].ToString();
             return apiKey;
         }
     }

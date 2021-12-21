@@ -21,7 +21,7 @@ namespace WebService
                 AppRoleAuthRoleId       = "demo-web-app",
                 AppRoleAuthSecretIdFile = "/tmp/secret",
                 ApiKeyPath              = "api-key",
-                ApiKeyDescriptor        = "apiKey"
+                ApiKeyField             = "api-key-descriptor"
             }));
         }
 
