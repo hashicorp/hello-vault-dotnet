@@ -40,7 +40,7 @@ namespace app.Vault
             IVaultClient vaultClientForUnwrapping = new VaultClient(
                 new VaultClientSettings(
                     vaultServerUriWithPort: settings.Address,
-                    authMethodInfo:         new TokenAuthMethodInfo( vaultToken: wrappingToken )
+                    authMethodInfo: new TokenAuthMethodInfo( vaultToken: wrappingToken )
                 )
             );
 
@@ -49,30 +49,30 @@ namespace app.Vault
             // requires a valid wrapping token to initialize the VaultClient.
             string appRoleAuthSecretId
                 = vaultClientForUnwrapping.V1.System
-                    .UnwrapWrappedResponseDataAsync< Dictionary< string, object > >( tokenId: null )
+                    .UnwrapWrappedResponseDataAsync<Dictionary<string, object>>( tokenId: null )
                         .Result.Data[ "secret_id" ]
                             .ToString();
 
             AppRoleAuthMethodInfo appRoleAuth = new AppRoleAuthMethodInfo(
-                roleId:   settings.AppRoleAuthRoleId,
+                roleId: settings.AppRoleAuthRoleId,
                 secretId: appRoleAuthSecretId
             );
 
             return new VaultClient(
                 new VaultClientSettings(
                     vaultServerUriWithPort: settings.Address,
-                    authMethodInfo:         appRoleAuth
+                    authMethodInfo: appRoleAuth
                 )
             );
         }
 
         public string GetSecretApiKey()
         {
-            Secret< SecretData > secret = _client.V1.Secrets.KeyValue.V2.ReadSecretAsync(
+            Secret<SecretData> secret = _client.V1.Secrets.KeyValue.V2.ReadSecretAsync(
                 path: _settings.ApiKeyPath // vault path within kv-v2/ (e.g. "api-key", not "kv-v2/api-key" )
             ).Result;
 
-            return secret.Data.Data[ _settings.ApiKeyDescriptor ].ToString();
+            return secret.Data.Data[_settings.ApiKeyDescriptor].ToString();
         }
     }
 }
