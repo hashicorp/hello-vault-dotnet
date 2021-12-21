@@ -9,14 +9,13 @@ namespace app.Vault
 {
     public class VaultWrapper
     {
-        protected IVaultClient _client;
-        protected readonly VaultWrapperSettings _settings;
+        private IVaultClient _client;
+        private readonly VaultWrapperSettings _settings;
 
         public VaultWrapper( VaultWrapperSettings settings )
         {
-            _settings = settings;
-
             _client = AppRoleAuthClient( settings );
+            _settings = settings;
         }
 
         /// <summary>
