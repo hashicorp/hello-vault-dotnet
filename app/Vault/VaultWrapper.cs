@@ -5,7 +5,7 @@ using VaultSharp.V1.AuthMethods.AppRole;
 using VaultSharp.V1.AuthMethods.Token;
 using VaultSharp.V1.Commons;
 
-namespace app.Vault
+namespace WebService.Vault
 {
     public class VaultWrapper
     {

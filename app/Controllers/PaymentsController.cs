@@ -2,9 +2,9 @@ using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 
-using app.Vault;
+using WebService.Vault;
 
-namespace app.Controllers
+namespace WebService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

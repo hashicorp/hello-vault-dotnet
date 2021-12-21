@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using app.Vault;
+using WebService.Vault;
 
-namespace app
+namespace WebService
 {
     public class Startup
     {

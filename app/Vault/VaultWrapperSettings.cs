@@ -1,4 +1,4 @@
-namespace app.Vault
+namespace WebService.Vault
 {
     public class VaultWrapperSettings
     {
