@@ -11,15 +11,15 @@ namespace WebService.Controllers
     [Route("api/[controller]")]
     public class PaymentsController : ControllerBase
     {
-        private const string secureServiceEndpoint = "http://secure-service/api";
-
         private readonly ILogger _logger;
         private VaultWrapper _vault;
+        private readonly string _secureServiceAddress;
 
-        public PaymentsController(ILogger<PaymentsController> logger, VaultWrapper vault)
+        public PaymentsController(ILogger<PaymentsController> logger, VaultWrapper vault, string secureServiceAddress)
         {
             _logger = logger;
             _vault = vault;
+            _secureServiceAddress = secureServiceAddress;
         }
 
         // POST /api/Payments
@@ -27,11 +27,13 @@ namespace WebService.Controllers
         public string CreatePayment()
         {
             // fetch the secret api key from Vault
-            _logger.LogInformation("retrieving api key from Vault");
-            string apiKey = _vault.GetSecretApiKey();
-            _logger.LogInformation("successfully retrieved api key from Vault");            
+            _logger.LogInformation("retrieving api key from Vault: started");
 
-            HttpWebRequest request = WebRequest.Create(secureServiceEndpoint) as HttpWebRequest;
+            string apiKey = _vault.GetSecretApiKey();
+
+            _logger.LogInformation("retrieving api key from Vault: done");
+
+            HttpWebRequest request = WebRequest.Create(_secureServiceAddress) as HttpWebRequest;
 
             // add the secret api key to the request header
             request.Headers[ "x-api-key" ] = apiKey;
