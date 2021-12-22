@@ -17,14 +17,14 @@ namespace WebService
             services.AddControllers();
 
             services.AddSingleton<VaultWrapper>( new VaultWrapper( new VaultWrapperSettings{
-                Address                 = Environment.GetEnvironmentVariable( "VAULT_ADDRESS" ),
-                AppRoleAuthRoleId       = Environment.GetEnvironmentVariable( "VAULT_APPROLE_ROLE_ID" ),
-                AppRoleAuthSecretIdFile = Environment.GetEnvironmentVariable( "VAULT_APPROLE_SECRET_ID_FILE" ),
-                ApiKeyPath              = Environment.GetEnvironmentVariable( "VAULT_API_KEY_PATH" ),
-                ApiKeyField             = Environment.GetEnvironmentVariable( "VAULT_API_KEY_FIELD" ),
+                Address                 = GetEnvironmentVariableOrThrow( "VAULT_ADDRESS" ),
+                AppRoleAuthRoleId       = GetEnvironmentVariableOrThrow( "VAULT_APPROLE_ROLE_ID" ),
+                AppRoleAuthSecretIdFile = GetEnvironmentVariableOrThrow( "VAULT_APPROLE_SECRET_ID_FILE" ),
+                ApiKeyPath              = GetEnvironmentVariableOrThrow( "VAULT_API_KEY_PATH" ),
+                ApiKeyField             = GetEnvironmentVariableOrThrow( "VAULT_API_KEY_FIELD" ),
             }));
 
-            services.AddSingleton<string>( Environment.GetEnvironmentVariable( "SECURE_SERVICE_ADDRESS" ) );
+            services.AddSingleton<string>( GetEnvironmentVariableOrThrow( "SECURE_SERVICE_ADDRESS" ) );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +41,18 @@ namespace WebService
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private string GetEnvironmentVariableOrThrow( string variable )
+        {
+            var value = Environment.GetEnvironmentVariable( variable );
+
+            if ( String.IsNullOrEmpty( value ) )
+            {
+                throw new ApplicationException( $"The required environment variable '{ variable }' is not set" );
+            }
+
+            return value;
         }
     }
 }
