@@ -43,7 +43,7 @@ namespace WebService
             });
         }
 
-        private string GetEnvironmentVariableOrThrow(string variable)
+        private static string GetEnvironmentVariableOrThrow(string variable)
         {
             var value = Environment.GetEnvironmentVariable(variable);
 
