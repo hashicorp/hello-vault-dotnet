@@ -3,15 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-<<<<<<< HEAD:app/Startup.cs
-using app.Vault;
-
-namespace app
-=======
 using WebService.Vault;
 
 namespace WebService
->>>>>>> main:WebService/Startup.cs
 {
     public class Startup
     {
@@ -22,17 +16,13 @@ namespace WebService
             services.AddControllers();
 
             // TODO: initialize the parameters from environment variables instead
-            services.AddSingleton< VaultWrapper >( new VaultWrapper( new VaultWrapperSettings{
+            services.AddSingleton<VaultWrapper>(new VaultWrapper(new VaultWrapperSettings{
                 Address                 = "http://vault-server:8200",
                 AppRoleAuthRoleId       = "demo-web-app",
                 AppRoleAuthSecretIdFile = "/tmp/secret",
                 ApiKeyPath              = "api-key",
-<<<<<<< HEAD:app/Startup.cs
-                ApiKeyDescriptor        = "apiKey",
+                ApiKeyField             = "apiKey",
                 DynamicSecretRole       = "dev-readonly"
-=======
-                ApiKeyField             = "api-key-descriptor"
->>>>>>> main:WebService/Startup.cs
             }));
         }
 

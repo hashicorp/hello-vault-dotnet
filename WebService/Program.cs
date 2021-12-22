@@ -7,11 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-<<<<<<< HEAD:app/Program.cs
-namespace app
-=======
 namespace WebService
->>>>>>> main:WebService/Program.cs
 {
     public class Program
     {

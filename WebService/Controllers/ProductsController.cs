@@ -6,10 +6,9 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-using app.Vault;
-using app.Models;
+using WebService.Vault;
 
-namespace app.Controllers
+namespace WebService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -26,7 +25,7 @@ namespace app.Controllers
 
         // Get /api/Products
         [HttpGet]
-        public IEnumerable<Product> GetProducts()
+        public string GetProducts()
         {
             string connectionString = _vault.GetDbConnectionString();
             using(SqlConnection connection = new SqlConnection(connectionString))
@@ -47,8 +46,8 @@ namespace app.Controllers
             };
             
             // Serialize to IEnumerable
-            List<Product> someProducts = new List<Product>(){};
-            return someProducts;
+
+            return string.Empty;
         }
     }
 }

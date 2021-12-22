@@ -15,11 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-<<<<<<< HEAD:app/Properties/launchSettings.json
-    "app": {
-=======
     "WebService": {
->>>>>>> main:WebService/Properties/launchSettings.json
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
