@@ -89,7 +89,7 @@ vault write database/config/example \
     plugin_name=mssql-database-plugin \
     allowed_roles="dev-readonly" \
     connection_url='sqlserver://{{username}}:{{password}}@database:1433' \
-    username="vault-VaultSample" \
+    username="vault-db-user" \
     password="DatabaseAdminPassword2"
 
 # allow Vault to create roles dynamically with the same privileges as the 'readonly' role created in our database's init scripts
