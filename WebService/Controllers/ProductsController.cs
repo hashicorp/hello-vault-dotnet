@@ -56,7 +56,6 @@ namespace WebService.Controllers
                         }
                     }
                 }
-                
             };
             
             return products;
