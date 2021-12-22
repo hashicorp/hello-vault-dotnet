@@ -64,6 +64,14 @@ Check the logs:
 docker logs hello-vault-dotnet-app-1
 ```
 
+```log
+...
+info: WebService.Controllers.PaymentsController[0]
+      retrieving api key from Vault
+info: WebService.Controllers.PaymentsController[0]
+      successfully retrieved api key from Vault
+```
+
 ```json
 {
   "message": "hello world!"
@@ -76,4 +84,5 @@ docker logs hello-vault-dotnet-app-1
 [docker-compose]:  https://docs.docker.com/compose/install/
 [curl]:            https://curl.se/
 [jq]:              https://stedolan.github.io/jq/
+
 
