@@ -2,11 +2,7 @@ version: "3.9"
 services:
 
   app:
-<<<<<<< HEAD
-    build: app/
-=======
     build: WebService/
->>>>>>> main
     volumes:
       - type:   volume
         source: trusted-orchestrator-volume
