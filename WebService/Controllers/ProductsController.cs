@@ -34,7 +34,7 @@ namespace WebService.Controllers
             _vault = vault;
         }
 
-        // Get /api/Products
+        // GET /api/Products
         [HttpGet]
         public IEnumerable<Product> GetProducts()
         {
