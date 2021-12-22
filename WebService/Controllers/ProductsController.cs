@@ -19,10 +19,12 @@ namespace WebService.Controllers
 
         public struct Product
         {
-            public Product(string name)
+            public Product(int id, string name)
             {
+                Id = id;
                 Name = name;
             }
+            public int Id { get; }
             public string Name { get; }
         }
 
@@ -44,7 +46,7 @@ namespace WebService.Controllers
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string sql = "SELECT name FROM products";
+                string sql = "SELECT * FROM products";
 
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -52,7 +54,7 @@ namespace WebService.Controllers
                     {
                         while(reader.Read())
                         {
-                            products.Add(new Product(reader.GetString(0)));
+                            products.Add(new Product(reader.GetInt32(0), reader.GetString(1)));
                         }
                     }
                 }
