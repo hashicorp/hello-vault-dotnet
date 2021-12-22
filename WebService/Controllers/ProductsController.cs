@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 using WebService.Vault;
@@ -15,25 +14,33 @@ namespace WebService.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private VaultWrapper _vault;
 
-        public ProductsController(IConfiguration configuration, ILogger logger, VaultWrapper vault)
+        public struct Product
         {
-            _configuration = configuration;
+            public Product(string name)
+            {
+                Name = name;
+            }
+            public string Name { get; }
+        }
+
+        public ProductsController(ILogger<ProductsController> logger, VaultWrapper vault)
+        {
             _logger = logger;
             _vault = vault;
         }
 
         // Get /api/Products
         [HttpGet]
-        public string GetProducts()
+        public IEnumerable<Product> GetProducts()
         {
             _logger.LogInformation("Retrieving database connection string from Vault");
             string connectionString = _vault.GetDbConnectionString();
             _logger.LogInformation("Successfully retrieved database connection string from Vault");
 
+            List<Product> products = new List<Product>();
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -43,17 +50,16 @@ namespace WebService.Controllers
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while (reader.Read())
+                        while(reader.Read())
                         {
+                            products.Add(new Product(reader.GetString(0)));
                         }
                     }
                 }
                 
             };
             
-            // Serialize to IEnumerable
-
-            return string.Empty;
+            return products;
         }
     }
 }
