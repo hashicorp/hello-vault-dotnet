@@ -44,7 +44,7 @@ namespace WebService.Controllers
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                String sql = "SELECT name FROM products";
+                string sql = "SELECT name FROM products";
 
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -57,7 +57,7 @@ namespace WebService.Controllers
                     }
                 }
             };
-            
+
             return products;
         }
     }
