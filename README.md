@@ -48,9 +48,32 @@ hello-vault-go-secure-service-1         Up About a minute (healthy)   0.0.0.0:17
 hello-vault-go-database-1               Up About a minute (healthy)   0.0.0.0:5432->5432/tcp
 ```
 
+### 2. Try out `POST /api/Payments` endpoint (static secrets workflow)
+
+`POST /api/Payments` endpoint is a simple example of the static secrets workflow.
+Our service will make a request to another service's restricted API endpoint
+using an API key value stored in Vault's static secrets engine.
+
+```bash
+curl -s -h "Content-length=0" -X POST http://localhost:8080/payments | jq
+```
+
+Check the logs:
+
+```bash
+docker logs hello-vault-dotnet-app-1
+```
+
+```json
+{
+  "message": "hello world!"
+}
+```
+
 [vault]:           https://www.vaultproject.io/
 [vaultsharp]:      https://github.com/rajanadar/VaultSharp
 [docker]:          https://docs.docker.com/get-docker/
 [docker-compose]:  https://docs.docker.com/compose/install/
 [curl]:            https://curl.se/
 [jq]:              https://stedolan.github.io/jq/
+
