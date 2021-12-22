@@ -27,8 +27,6 @@ ALTER ROLE [db_datareader] ADD MEMBER [vault_datareader];
  -- Required for Vault to drop database users when the TTL expires
 GRANT ALTER ANY USER TO [vault-db-user];
 GO
-USE master;
-GO
 
 -- Change the default database for the root login
 ALTER LOGIN [vault-db-user] WITH DEFAULT_DATABASE = [example]; 
