@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 using WebService.Vault;
 
@@ -15,11 +16,13 @@ namespace WebService.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
         private VaultWrapper _vault;
 
-        public ProductsController(VaultWrapper vault, IConfiguration configuration)
+        public ProductsController(IConfiguration configuration, ILogger logger, VaultWrapper vault)
         {
             _configuration = configuration;
+            _logger = logger;
             _vault = vault;
         }
 
@@ -27,7 +30,10 @@ namespace WebService.Controllers
         [HttpGet]
         public string GetProducts()
         {
+            _logger.LogInformation("Retrieving database connection string from Vault");
             string connectionString = _vault.GetDbConnectionString();
+            _logger.LogInformation("Successfully retrieved database connection string from Vault");
+
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
