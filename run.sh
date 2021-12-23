@@ -11,13 +11,11 @@ set -e
 # mcr.microsoft.com/mssql/server image. This is to work around mssql/server's
 # incompatibility with arm64 architecture
 if [ "$(uname -m)" = "arm64" ]; then
-    echo "Running docker-compose.arm64.yaml"
-    docker compose -f docker-compose.arm64.yaml down
-    docker compose -f docker-compose.arm64.yaml build
-    docker compose -f docker-compose.arm64.yaml up -d
+    echo "Restarting with docker-compose.arm64.yaml"
+    docker compose -f docker-compose.arm64.yaml down --volumes
+    docker compose -f docker-compose.arm64.yaml up -d --build
 else
-    echo "Running docker-compose.yaml"
-    docker compose -f docker-compose.yaml down
-    docker compose -f docker-compose.yaml build
-    docker compose -f docker-compose.yaml up -d
+    echo "Restarting with docker-compose.yaml"
+    docker compose -f docker-compose.yaml down --volumes
+    docker compose -f docker-compose.yaml up -d --build
 fi
