@@ -74,7 +74,7 @@ curl -s -X POST --header "Content-Length: 0" http://localhost/api/Payments | jq
 Check the logs:
 
 ```shell-session
-docker logs hello-vault-dotnet-app-1 2>&1 | grep api
+docker logs hello-vault-dotnet-app-1 2>&1 | grep "api key"
 ```
 
 ```log
