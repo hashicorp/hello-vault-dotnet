@@ -17,12 +17,12 @@ namespace WebService
 
             // TODO: initialize the parameters from environment variables instead
             services.AddSingleton<VaultWrapper>(new VaultWrapper(new VaultWrapperSettings{
-                Address                 = "http://vault-server:8200",
-                AppRoleAuthRoleId       = "demo-web-app",
-                AppRoleAuthSecretIdFile = "/tmp/secret",
-                ApiKeyPath              = "api-key",
-                ApiKeyField             = "api-key-descriptor",
-                DynamicSecretRole       = "dev-readonly"
+                Address                     = "http://vault-server:8200",
+                AppRoleAuthRoleId           = "demo-web-app",
+                AppRoleAuthSecretIdFile     = "/tmp/secret",
+                ApiKeyPath                  = "api-key",
+                ApiKeyField                 = "api-key-descriptor",
+                DatabaseCredentialsRole     = "dev-readonly"
             }));
         }
 

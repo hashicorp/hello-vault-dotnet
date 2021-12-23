@@ -80,7 +80,7 @@ namespace WebService.Vault
         {
             Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials =
                 _client.V1.Secrets.Database.GetCredentialsAsync(
-                _settings.DynamicSecretRole).Result;
+                _settings.DatabaseCredentialsRole).Result;
 
             string userId = dynamicDatabaseCredentials.Data.Username;
             string password = dynamicDatabaseCredentials.Data.Password;

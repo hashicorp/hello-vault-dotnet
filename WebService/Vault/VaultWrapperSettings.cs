@@ -14,6 +14,6 @@ namespace WebService.Vault
         public string ApiKeyField { get; set; }
 
         /// Dynamic secrets variables
-        public string DynamicSecretRole { get; set; }
+        public string DatabaseCredentialsRole { get; set; }
     }
 }
