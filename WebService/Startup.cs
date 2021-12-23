@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,16 +15,17 @@ namespace WebService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            // TODO: initialize the parameters from environment variables instead
-            services.AddSingleton<VaultWrapper>(new VaultWrapper(new VaultWrapperSettings{
-                Address                     = "http://vault-server:8200",
-                AppRoleAuthRoleId           = "demo-web-app",
-                AppRoleAuthSecretIdFile     = "/tmp/secret",
-                ApiKeyPath                  = "api-key",
-                ApiKeyField                 = "api-key-descriptor",
-                DatabaseCredentialsRole     = "dev-readonly"
+            
+            services.AddSingleton<VaultWrapper>( new VaultWrapper( new VaultWrapperSettings{
+                Address                 = GetEnvironmentVariableOrThrow("VAULT_ADDRESS"),
+                AppRoleAuthRoleId       = GetEnvironmentVariableOrThrow("VAULT_APPROLE_ROLE_ID"),
+                AppRoleAuthSecretIdFile = GetEnvironmentVariableOrThrow("VAULT_APPROLE_SECRET_ID_FILE"),
+                ApiKeyPath              = GetEnvironmentVariableOrThrow("VAULT_API_KEY_PATH"),
+                ApiKeyField             = GetEnvironmentVariableOrThrow("VAULT_API_KEY_FIELD"),
+                DatabaseCredentialsRole = GetEnvironmentVariableOrThrow("VAULT_DB_CREDS_ROLE")
             }));
+
+            services.AddSingleton<string>(GetEnvironmentVariableOrThrow("SECURE_SERVICE_ADDRESS"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +42,18 @@ namespace WebService
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static string GetEnvironmentVariableOrThrow(string variable)
+        {
+            var value = Environment.GetEnvironmentVariable(variable);
+
+            if (String.IsNullOrEmpty(value))
+            {
+                throw new ApplicationException($"The required environment variable '{ variable }' is not set");
+            }
+
+            return value;
         }
     }
 }
