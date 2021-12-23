@@ -75,6 +75,32 @@ vault secrets enable -path=kv-v2 kv-v2
 # seed the kv-v2 store with an entry our web app will use
 vault kv put kv-v2/api-key api-key-descriptor=my-secret-key
 
+#####################################
+########## DYNAMIC SECRETS ##########
+#####################################
+
+# enable a database secrets engine
+# ref: https://www.vaultproject.io/docs/secrets/databases
+vault secrets enable database
+
+# configure Vault's connection to our db, in this case PostgreSQL
+# ref: https://www.vaultproject.io/docs/secrets/databases/mssql
+vault write database/config/example \
+    plugin_name=mssql-database-plugin \
+    allowed_roles="dev-readonly" \
+    connection_url='sqlserver://{{username}}:{{password}}@database:1433' \
+    username="vault-db-user" \
+    password="DatabaseAdminPassword2"
+
+# allow Vault to create roles dynamically with the same privileges as the 'readonly' role created in our database's init scripts
+vault write database/roles/dev-readonly \
+    db_name=example \
+    creation_statements="CREATE LOGIN [{{name}}] WITH PASSWORD = '{{password}}';\
+        CREATE USER [{{name}}] FOR LOGIN [{{name}}]; \
+        ALTER ROLE [vault_datareader] ADD MEMBER [{{name}}];" \
+    default_ttl="1h" \
+    max_ttl="24h"
+
 # this container is now healthy
 touch /tmp/healthy
 

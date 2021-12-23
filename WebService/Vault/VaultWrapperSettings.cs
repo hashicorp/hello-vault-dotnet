@@ -12,5 +12,8 @@ namespace WebService.Vault
         // Location and field name of the api key secret within Vault
         public string ApiKeyPath { get; set; }
         public string ApiKeyField { get; set; }
+
+        /// Dynamic secrets variables
+        public string DatabaseCredentialsRole { get; set; }
     }
 }

@@ -15,13 +15,14 @@ namespace WebService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            
             services.AddSingleton<VaultWrapper>( new VaultWrapper( new VaultWrapperSettings{
                 Address                 = GetEnvironmentVariableOrThrow("VAULT_ADDRESS"),
                 AppRoleAuthRoleId       = GetEnvironmentVariableOrThrow("VAULT_APPROLE_ROLE_ID"),
                 AppRoleAuthSecretIdFile = GetEnvironmentVariableOrThrow("VAULT_APPROLE_SECRET_ID_FILE"),
                 ApiKeyPath              = GetEnvironmentVariableOrThrow("VAULT_API_KEY_PATH"),
                 ApiKeyField             = GetEnvironmentVariableOrThrow("VAULT_API_KEY_FIELD"),
+                DatabaseCredentialsRole = GetEnvironmentVariableOrThrow("VAULT_DB_CREDS_ROLE")
             }));
 
             services.AddSingleton<string>(GetEnvironmentVariableOrThrow("SECURE_SERVICE_ADDRESS"));

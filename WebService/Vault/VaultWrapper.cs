@@ -1,10 +1,12 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using VaultSharp;
 using VaultSharp.V1.AuthMethods.AppRole;
 using VaultSharp.V1.AuthMethods.Token;
 using VaultSharp.V1.Commons;
+using VaultSharp.V1.SecretsEngines;
 
 namespace WebService.Vault
 {
@@ -30,16 +32,16 @@ namespace WebService.Vault
         /// <seealso href="https://www.vaultproject.io/docs/concepts/response-wrapping"/>
         /// <seealso href="https://learn.hashicorp.com/tutorials/vault/secure-introduction?in=vault/app-integration#trusted-orchestrator"/>
         /// <seealso href="https://learn.hashicorp.com/tutorials/vault/approle-best-practices?in=vault/auth-methods#secretid-delivery-best-practices"/>
-        private IVaultClient AppRoleAuthClient( VaultWrapperSettings settings )
+        private IVaultClient AppRoleAuthClient(VaultWrapperSettings settings)
         {
             // The wrapping token is placed here by our trusted orchestrator
-            string wrappingToken = File.ReadAllText( settings.AppRoleAuthSecretIdFile ).Trim();
+            string wrappingToken = File.ReadAllText(settings.AppRoleAuthSecretIdFile).Trim();
 
             // We can't reuse the default VaultClient instance for unwrapping because
             // it needs to be intialized with a different TokenAuthMethodInfo
-            IVaultClient vaultClientForUnwrapping = new VaultClient( new VaultClientSettings(
+            IVaultClient vaultClientForUnwrapping = new VaultClient(new VaultClientSettings(
                 settings.Address,
-                new TokenAuthMethodInfo( vaultToken: wrappingToken )
+                new TokenAuthMethodInfo(vaultToken: wrappingToken)
             ));
 
             // We pass null here instead of the wrapping token to avoid depleting
@@ -47,7 +49,7 @@ namespace WebService.Vault
             // requires a valid wrapping token to initialize the VaultClient.
             string appRoleAuthSecretId
                 = vaultClientForUnwrapping.V1.System
-                    .UnwrapWrappedResponseDataAsync<Dictionary<string, object>>( tokenId: null )
+                    .UnwrapWrappedResponseDataAsync<Dictionary<string, object>>(tokenId: null)
                         .Result.Data[ "secret_id" ]
                             .ToString();
 
@@ -72,6 +74,27 @@ namespace WebService.Vault
 
             string apiKey = secret.Data.Data[ _settings.ApiKeyField ].ToString();
             return apiKey;
+        }
+
+        public string GetDbConnectionString()
+        {
+            Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials =
+                _client.V1.Secrets.Database.GetCredentialsAsync(
+                _settings.DatabaseCredentialsRole).Result;
+
+            string userId = dynamicDatabaseCredentials.Data.Username;
+            string password = dynamicDatabaseCredentials.Data.Password;
+            
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+
+            // To Do: Get from appsettings or env var
+            builder.DataSource = "database";
+            builder.InitialCatalog = "example";
+
+            builder.UserID = userId;
+            builder.Password = password;
+
+            return builder.ConnectionString;
         }
     }
 }
