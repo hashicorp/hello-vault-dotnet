@@ -1,12 +1,18 @@
 # hello-vault-dotnet
-This is a sample application that demonstrates how to authenticate to and retrieve secrets from HashiCorp [Vault][vault] using the [VaultSharp][vaultsharp] client library.
+
+This is a sample application that demonstrates how to authenticate to and
+retrieve secrets from HashiCorp [Vault][vault] using the
+[VaultSharp][vaultsharp] client library.
 
 ## Prerequisites
 
-1. [`docker`][docker] to easily run the application in the same environment regardless of your local operating system
-2. [`docker compose`][docker-compose] to easily set up all the components of the demo (the application's web server, the Vault server, the database, etc.) all at once
-3. [`curl`][curl] to test our endpoints
-4. [`jq`][jq] (optional) for prettier `JSON` output
+1. [`docker`][docker] to easily run the application in the same environment
+   regardless of your local operating system
+1. [`docker compose`][docker-compose] to easily set up all the components of the
+   demo (the application's web server, the Vault server, the database, etc.) all
+   at once
+1. [`curl`][curl] to test our endpoints
+1. [`jq`][jq] (optional) for prettier `JSON` output
 
 ## Try it out
 
@@ -50,9 +56,9 @@ hello-vault-go-database-1               Up About a minute (healthy)   0.0.0.0:54
 
 ### 2. Try out `POST /api/Payments` endpoint (static secrets workflow)
 
-`POST /api/Payments` endpoint is a simple example of the static secrets workflow.
-Our service will make a request to another service's restricted API endpoint
-using an API key value stored in Vault's static secrets engine.
+`POST /api/Payments` endpoint is a simple example of the static secrets
+workflow. Our service will make a request to another service's restricted API
+endpoint using an API key value stored in Vault's static secrets engine.
 
 ```bash
 curl -s -h "Content-length=0" -X POST http://localhost:8080/payments | jq
@@ -84,5 +90,3 @@ info: WebService.Controllers.PaymentsController[0]
 [docker-compose]:  https://docs.docker.com/compose/install/
 [curl]:            https://curl.se/
 [jq]:              https://stedolan.github.io/jq/
-
-
