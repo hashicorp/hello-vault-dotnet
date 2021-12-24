@@ -13,7 +13,7 @@ services:
       VAULT_DB_CREDS_ROLE:          dev-readonly
       DATABASE_HOSTNAME:            database
       DATABASE_PORT:                1433
-      SECURE_SERVICE_ADDRESS:       http://secure-service/api
+      SECURE_SERVICE_ENDPOINT:      http://secure-service/api
     volumes:
       - type:   volume
         source: trusted-orchestrator-volume

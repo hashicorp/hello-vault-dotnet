@@ -76,25 +76,13 @@ namespace WebService.Vault
             return apiKey;
         }
 
-        public string GetDbConnectionString()
+        public UsernamePasswordCredentials GetDatabaseCredentials()
         {
-            Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials =
-                _client.V1.Secrets.Database.GetCredentialsAsync(
-                _settings.DatabaseCredentialsRole).Result;
+            Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials = _client.V1.Secrets.Database.GetCredentialsAsync(
+                roleName: _settings.DatabaseCredentialsRole // vault path within database/roles/
+            ).Result;
 
-            string userId = dynamicDatabaseCredentials.Data.Username;
-            string password = dynamicDatabaseCredentials.Data.Password;
-            
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-
-            // To Do: Get from appsettings or env var
-            builder.DataSource = "database";
-            builder.InitialCatalog = "example";
-
-            builder.UserID = userId;
-            builder.Password = password;
-
-            return builder.ConnectionString;
+            return dynamicDatabaseCredentials.Data;
         }
     }
 }
