@@ -42,16 +42,16 @@ namespace WebService.DB
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
 
-            builder.DataSource = settings.DataSource;
-            builder.InitialCatalog = settings.InitialCatalog;
-            builder.ConnectTimeout = settings.Timeout;
-            builder.UserID = username;
-            builder.Password = password;
+            builder.DataSource      = settings.DataSource;
+            builder.InitialCatalog  = settings.InitialCatalog;
+            builder.ConnectTimeout  = settings.Timeout;
+            builder.UserID          = username;
+            builder.Password        = password;
 
             return builder.ConnectionString;
         }
 
-        #region < implementation of IDisposable >
+        #region < implementation ofIDisposable >
 
         private bool _disposed;
 
