@@ -23,7 +23,7 @@ namespace WebService.Controllers
 
         // GET /api/Products
         [HttpGet]
-        public IEnumerable<DB.Product> GetProducts()
+        public IEnumerable<Product> GetProducts()
         {
             _logger.LogInformation("fetching products from database: started");
 
