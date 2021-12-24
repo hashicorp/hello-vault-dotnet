@@ -1,38 +1,44 @@
-USE master;
-GO
-CREATE LOGIN [vault-db-user] WITH PASSWORD = N'DatabaseAdminPassword2';
-ALTER SERVER ROLE [securityadmin] ADD MEMBER [vault-db-user];
-ALTER SERVER ROLE [processadmin] ADD MEMBER [vault-db-user];
-GRANT ALTER ANY LOGIN TO [vault-db-user];
+-- Create a database
+CREATE DATABASE [example];
 GO
 
--- create a database
-CREATE DATABASE [example];
+
+-- Add a database user for the Vault root login
+CREATE LOGIN [vault-db-user] WITH PASSWORD = N'VaultDatabasePassword1';
+GO
+
+ALTER SERVER ROLE [securityadmin] ADD MEMBER [vault-db-user];
+ALTER SERVER ROLE [processadmin] ADD MEMBER [vault-db-user];
+GO
+
+GRANT ALTER ANY LOGIN TO [vault-db-user];
 GO
 
 USE [example];
 GO
 
--- Add a database user for the Vault root login
-CREATE USER [vault-db-user] FOR LOGIN [vault-db-user]; 
+CREATE USER [vault-db-user] FOR LOGIN [vault-db-user];
+GO
+
 ALTER ROLE [db_accessadmin] ADD MEMBER [vault-db-user];
 ALTER ROLE [db_securityadmin] ADD MEMBER [vault-db-user];
-
--- Create a user-defined database role because only db_owner members can alter fixed database roles
-CREATE ROLE [vault_datareader]; 
-
--- Add user-defined role to fixed db_datareader role
-ALTER ROLE [db_datareader] ADD MEMBER [vault_datareader]; 
+GO
 
  -- Required for Vault to drop database users when the TTL expires
 GRANT ALTER ANY USER TO [vault-db-user];
 GO
 
 -- Change the default database for the root login
-ALTER LOGIN [vault-db-user] WITH DEFAULT_DATABASE = [example]; 
+ALTER LOGIN [vault-db-user] WITH DEFAULT_DATABASE = [example];
 GO
 
--- create a couple of tables
+-- Create a user-defined database role because only db_owner members can alter fixed database roles
+CREATE ROLE [vault_datareader];
+
+-- Add user-defined role to fixed db_datareader role
+ALTER ROLE [db_datareader] ADD MEMBER [vault_datareader];
+
+-- Create a couple of tables
 CREATE TABLE [example].[dbo].[products] (
    [id]          INT           PRIMARY KEY IDENTITY(1,1),
    [name]        VARCHAR(255)  NOT NULL
@@ -48,7 +54,7 @@ CREATE TABLE [example].[dbo].[customers] (
 );
 GO
 
--- populate them
+-- Populate them
 INSERT INTO [example].[dbo].[products] ([name])
 VALUES
     ( 'Rustic Webcam' ),
