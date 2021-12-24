@@ -10,7 +10,7 @@ services:
       VAULT_API_KEY_PATH:               api-key
       VAULT_API_KEY_FIELD:              api-key-descriptor
       VAULT_DATABASE_CREDENTIALS_ROLE:  dev-readonly
-      DATABASE_DATA_SOURCE:             database
+      DATABASE_DATA_SOURCE:             tcp:database,1433
       DATABASE_INITIAL_CATALOG:         example
       DATABASE_TIMEOUT:                 30
       SECURE_SERVICE_ENDPOINT:          http://secure-service/api
