@@ -51,7 +51,7 @@ namespace WebService.DB
             return builder.ConnectionString;
         }
 
-        #region < implementation ofIDisposable >
+        #region < implementation of IDisposable >
 
         private bool _disposed;
 
