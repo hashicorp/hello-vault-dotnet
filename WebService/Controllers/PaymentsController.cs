@@ -48,7 +48,7 @@ namespace WebService.Controllers
             {
                 using (StreamReader sr = new StreamReader( response.GetResponseStream()))
                 {
-                    _logger.LogInformation($"sent request to { _secureServiceEndpoint } with api key and received response");
+                    _logger.LogInformation($"sent request to { _secureServiceEndpoint } with api key and received a response");
 
                     string stringResponse = sr.ReadToEnd();
                     return stringResponse;
