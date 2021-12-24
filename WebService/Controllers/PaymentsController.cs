@@ -46,10 +46,10 @@ namespace WebService.Controllers
             // forward the response back to the caller
             using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
             {
+                _logger.LogInformation($"sent request to { _settings.SecureServiceEndpoint } with api key and received a response");
+
                 using (StreamReader sr = new StreamReader( response.GetResponseStream()))
                 {
-                    _logger.LogInformation($"sent request to { _settings.SecureServiceEndpoint } with api key and received a response");
-
                     string stringResponse = sr.ReadToEnd();
                     return stringResponse;
                 }
