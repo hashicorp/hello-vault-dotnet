@@ -2,7 +2,6 @@
 CREATE DATABASE [example];
 GO
 
-
 -- Add a database user for the Vault root login
 CREATE LOGIN [vault-db-user] WITH PASSWORD = N'VaultDatabasePassword1';
 GO
