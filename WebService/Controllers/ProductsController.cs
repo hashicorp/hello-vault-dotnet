@@ -16,8 +16,8 @@ namespace WebService.Controllers
 
         public ProductsController(ILogger<ProductsController> logger, VaultWrapper vault, Database database)
         {
-            _logger = logger;
-            _vault = vault;
+            _logger   = logger;
+            _vault    = vault;
             _database = database;
         }
 
