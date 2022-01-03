@@ -6,7 +6,7 @@ namespace WebService.Database
 {
     public class DatabaseClient : IDisposable
     {
-        private SqlConnection _connection;
+        private readonly SqlConnection _connection;
 
         public DatabaseClient(DatabaseSettings settings, string username, string password)
         {

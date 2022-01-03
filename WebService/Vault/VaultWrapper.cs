@@ -10,7 +10,7 @@ namespace WebService.Vault
 {
     public class VaultWrapper
     {
-        private IVaultClient _client;
+        private readonly IVaultClient _client;
         private readonly VaultWrapperSettings _settings;
 
         public VaultWrapper(VaultWrapperSettings settings)
