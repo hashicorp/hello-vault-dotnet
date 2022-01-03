@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VaultSharp.V1.SecretsEngines;
 using WebService.Controllers;
-using WebService.DB;
+using WebService.Database;
 using WebService.Vault;
 
 namespace WebService
@@ -27,9 +27,11 @@ namespace WebService
                 }
             );
 
+            services.AddSingleton<VaultWrapper>(vault);
+
             UsernamePasswordCredentials credentials = vault.GetDatabaseCredentials();
 
-            Database database = new Database(
+            DatabaseClient database = new DatabaseClient(
                 new DatabaseSettings{
                     DataSource        = GetEnvironmentVariableOrThrow("DATABASE_DATA_SOURCE"),
                     InitialCatalog    = GetEnvironmentVariableOrThrow("DATABASE_INITIAL_CATALOG"),
@@ -39,8 +41,7 @@ namespace WebService
                 credentials.Password
             );
 
-            services.AddSingleton<VaultWrapper>(vault);
-            services.AddSingleton<Database>(database);
+            services.AddSingleton<DatabaseClient>(database);
             services.AddSingleton<PaymentsControllerSettings>(
                 new PaymentsControllerSettings {
                     SecureServiceEndpoint = GetEnvironmentVariableOrThrow("SECURE_SERVICE_ENDPOINT")

@@ -1,4 +1,4 @@
-namespace WebService.DB
+namespace WebService.Database
 {
     public class Product
     {

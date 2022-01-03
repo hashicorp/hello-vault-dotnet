@@ -16,7 +16,7 @@ namespace WebService.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly ILogger _logger;
-        private VaultWrapper _vault;
+        private readonly VaultWrapper _vault;
         private readonly PaymentsControllerSettings _settings;
 
         public PaymentsController(ILogger<PaymentsController> logger, VaultWrapper vault, PaymentsControllerSettings settings)

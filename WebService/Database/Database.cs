@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace WebService.DB
+namespace WebService.Database
 {
-    public class Database : IDisposable
+    public class DatabaseClient : IDisposable
     {
         private SqlConnection _connection;
 
-        public Database(DatabaseSettings settings, string username, string password)
+        public DatabaseClient(DatabaseSettings settings, string username, string password)
         {
             _connection = new SqlConnection(BuildConnectionString(settings, username, password));
             _connection.Open();
@@ -50,7 +50,7 @@ namespace WebService.DB
 
         private bool _disposed;
 
-        ~Database()
+        ~DatabaseClient()
         {
             Dispose(false);
         }

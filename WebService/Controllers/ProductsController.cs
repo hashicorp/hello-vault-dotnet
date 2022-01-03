@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebService.DB;
+using WebService.Database;
 using WebService.Vault;
 
 namespace WebService.Controllers
@@ -11,10 +11,10 @@ namespace WebService.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ILogger _logger;
-        private VaultWrapper _vault;
-        private Database _database;
+        private readonly VaultWrapper _vault;
+        private readonly DatabaseClient _database;
 
-        public ProductsController(ILogger<ProductsController> logger, VaultWrapper vault, Database database)
+        public ProductsController(ILogger<ProductsController> logger, VaultWrapper vault, DatabaseClient database)
         {
             _logger   = logger;
             _vault    = vault;
