@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
+using WebService.Database;
 using WebService.Vault;
 
 namespace WebService.Controllers
@@ -15,50 +11,25 @@ namespace WebService.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ILogger _logger;
-        private VaultWrapper _vault;
+        private readonly VaultWrapper _vault;
+        private readonly DatabaseClient _database;
 
-        public struct Product
+        public ProductsController(ILogger<ProductsController> logger, VaultWrapper vault, DatabaseClient database)
         {
-            public Product(int id, string name)
-            {
-                Id = id;
-                Name = name;
-            }
-            public int Id { get; }
-            public string Name { get; }
-        }
-
-        public ProductsController(ILogger<ProductsController> logger, VaultWrapper vault)
-        {
-            _logger = logger;
-            _vault = vault;
+            _logger   = logger;
+            _vault    = vault;
+            _database = database;
         }
 
         // GET /api/Products
         [HttpGet]
         public IEnumerable<Product> GetProducts()
         {
-            _logger.LogInformation("Retrieving database connection string from Vault");
-            string connectionString = _vault.GetDbConnectionString();
-            _logger.LogInformation("Successfully retrieved database connection string from Vault");
+            _logger.LogInformation("fetching products from database: started");
 
-            List<Product> products = new List<Product>();
-            using(SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string sql = "SELECT * FROM products";
+            IEnumerable<Product> products = _database.GetProducts();
 
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while(reader.Read())
-                        {
-                            products.Add(new Product(reader.GetInt32(0), reader.GetString(1)));
-                        }
-                    }
-                }
-            };
+            _logger.LogInformation("fetching products from database: done");
 
             return products;
         }

@@ -90,7 +90,7 @@ vault write database/config/example \
     allowed_roles="dev-readonly" \
     connection_url='sqlserver://{{username}}:{{password}}@database:1433' \
     username="vault-db-user" \
-    password="DatabaseAdminPassword2"
+    password="VaultDatabasePassword1"
 
 # allow Vault to create roles dynamically with the same privileges as the 'readonly' role created in our database's init scripts
 vault write database/roles/dev-readonly \
