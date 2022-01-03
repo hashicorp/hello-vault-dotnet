@@ -2,7 +2,6 @@ using System.IO;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using WebService.Vault;
 
 namespace WebService.Controllers
