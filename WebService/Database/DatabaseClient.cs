@@ -24,7 +24,8 @@ namespace WebService.Database
                 {
                     while(reader.Read())
                     {
-                        yield return new Product{
+                        yield return new Product
+                        {
                             Id   = reader.GetInt32(0),
                             Name = reader.GetString(1),
                         };
