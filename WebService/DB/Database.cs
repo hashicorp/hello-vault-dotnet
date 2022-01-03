@@ -14,11 +14,6 @@ namespace WebService.DB
             _connection.Open();
         }
 
-        ~Database()
-        {
-            Dispose(false);
-        }
-
         public IEnumerable<Product> GetProducts()
         {
             const string query = "SELECT * FROM [example].[dbo].[products]";
@@ -54,6 +49,11 @@ namespace WebService.DB
         #region < implementation of IDisposable >
 
         private bool _disposed;
+
+        ~Database()
+        {
+            Dispose(false);
+        }
 
         public void Dispose()
         {
