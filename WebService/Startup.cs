@@ -16,8 +16,10 @@ namespace WebService
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            VaultWrapper vault = new VaultWrapper(
-                new VaultWrapperSettings{
+            VaultWrapper vault = new VaultWrapper
+            (
+                new VaultWrapperSettings
+                {
                     Address                 = GetEnvironmentVariableOrThrow("VAULT_ADDRESS"),
                     AppRoleAuthRoleId       = GetEnvironmentVariableOrThrow("VAULT_APPROLE_ROLE_ID"),
                     AppRoleAuthSecretIdFile = GetEnvironmentVariableOrThrow("VAULT_APPROLE_SECRET_ID_FILE"),
@@ -31,8 +33,10 @@ namespace WebService
 
             UsernamePasswordCredentials credentials = vault.GetDatabaseCredentials();
 
-            DatabaseClient database = new DatabaseClient(
-                new DatabaseSettings{
+            DatabaseClient database = new DatabaseClient
+            (
+                new DatabaseSettings
+                {
                     DataSource        = GetEnvironmentVariableOrThrow("DATABASE_DATA_SOURCE"),
                     InitialCatalog    = GetEnvironmentVariableOrThrow("DATABASE_INITIAL_CATALOG"),
                     Timeout = int.Parse(GetEnvironmentVariableOrThrow("DATABASE_TIMEOUT"))
@@ -42,8 +46,10 @@ namespace WebService
             );
 
             services.AddSingleton<DatabaseClient>(database);
-            services.AddSingleton<PaymentsControllerSettings>(
-                new PaymentsControllerSettings {
+            services.AddSingleton<PaymentsControllerSettings>
+            (
+                new PaymentsControllerSettings
+                {
                     SecureServiceEndpoint = GetEnvironmentVariableOrThrow("SECURE_SERVICE_ENDPOINT")
                 }
             );
