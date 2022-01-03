@@ -13,9 +13,9 @@ namespace WebService.Vault
         private IVaultClient _client;
         private readonly VaultWrapperSettings _settings;
 
-        public VaultWrapper( VaultWrapperSettings settings )
+        public VaultWrapper(VaultWrapperSettings settings)
         {
-            _client = AppRoleAuthClient( settings );
+            _client = AppRoleAuthClient(settings);
             _settings = settings;
         }
 
@@ -56,7 +56,7 @@ namespace WebService.Vault
                 secretId: appRoleAuthSecretId
             );
 
-            IVaultClient client = new VaultClient( new VaultClientSettings(
+            IVaultClient client = new VaultClient(new VaultClientSettings(
                 settings.Address,
                 appRoleAuth
             ));
