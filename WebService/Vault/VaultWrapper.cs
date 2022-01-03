@@ -37,10 +37,10 @@ namespace WebService.Vault
 
             // We can't reuse the default VaultClient instance for unwrapping because
             // it needs to be intialized with a different TokenAuthMethodInfo
-            IVaultClient vaultClientForUnwrapping = new VaultClient(new VaultClientSettings(
-                settings.Address,
-                new TokenAuthMethodInfo(vaultToken: wrappingToken)
-            ));
+            IVaultClient vaultClientForUnwrapping = new VaultClient
+            (
+                new VaultClientSettings(settings.Address, new TokenAuthMethodInfo(vaultToken: wrappingToken))
+            );
 
             // We pass null here instead of the wrapping token to avoid depleting
             // the token's single use. This is to work around the fact that VaultSharp
@@ -51,23 +51,26 @@ namespace WebService.Vault
                         .Result.Data[ "secret_id" ]
                             .ToString();
 
-            AppRoleAuthMethodInfo appRoleAuth = new AppRoleAuthMethodInfo(
+            AppRoleAuthMethodInfo appRoleAuth = new AppRoleAuthMethodInfo
+            (
                 roleId: settings.AppRoleAuthRoleId,
                 secretId: appRoleAuthSecretId
             );
 
-            IVaultClient client = new VaultClient(new VaultClientSettings(
-                settings.Address,
-                appRoleAuth
-            ));
+            IVaultClient client = new VaultClient
+            (
+                new VaultClientSettings(settings.Address, appRoleAuth)
+            );
 
             return client;
         }
 
         public string GetSecretApiKey()
         {
-            Secret<SecretData> secret = _client.V1.Secrets.KeyValue.V2.ReadSecretAsync(
-                path: _settings.ApiKeyPath // vault path within kv-v2/ (e.g. "api-key", not "kv-v2/api-key" )
+            Secret<SecretData> secret = _client.V1.Secrets.KeyValue.V2.ReadSecretAsync
+            (
+                // vault path within kv-v2/ (e.g. "api-key", not "kv-v2/api-key")
+                path: _settings.ApiKeyPath
             ).Result;
 
             string apiKey = secret.Data.Data[ _settings.ApiKeyField ].ToString();
@@ -76,8 +79,10 @@ namespace WebService.Vault
 
         public UsernamePasswordCredentials GetDatabaseCredentials()
         {
-            Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials = _client.V1.Secrets.Database.GetCredentialsAsync(
-                roleName: _settings.DatabaseCredentialsRole // vault path within database/roles/
+            Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials = _client.V1.Secrets.Database.GetCredentialsAsync
+            (
+                // vault path within database/roles/ (e.g. "dev-readonly", not "database/roles/dev-readonly")
+                roleName: _settings.DatabaseCredentialsRole
             ).Result;
 
             return dynamicDatabaseCredentials.Data;
