@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VaultSharp.V1.SecretsEngines;
 using WebService.Controllers;
 using WebService.DB;
 using WebService.Vault;
@@ -26,7 +27,7 @@ namespace WebService
                 }
             );
 
-            var credentials = vault.GetDatabaseCredentials();
+            UsernamePasswordCredentials credentials = vault.GetDatabaseCredentials();
 
             Database database = new Database(
                 new DatabaseSettings{
