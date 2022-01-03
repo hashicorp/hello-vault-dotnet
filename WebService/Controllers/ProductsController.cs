@@ -27,7 +27,7 @@ namespace WebService.Controllers
         {
             _logger.LogInformation("fetching products from database: started");
 
-            IEnumerable<DB.Product> products = _database.GetProducts();
+            IEnumerable<Product> products = _database.GetProducts();
 
             _logger.LogInformation("fetching products from database: done");
 
