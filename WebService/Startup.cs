@@ -43,15 +43,15 @@ namespace WebService
                 credentials.Password
             );
 
+            var paymentsControllerSettings = new PaymentsControllerSettings
+            {
+                SecureServiceEndpoint = GetEnvironmentVariableOrThrow("SECURE_SERVICE_ENDPOINT")
+            };
+
+            // Inject dependencies as singletons
             services.AddSingleton<VaultWrapper>(vault);
             services.AddSingleton<DatabaseClient>(database);
-            services.AddSingleton<PaymentsControllerSettings>
-            (
-                new PaymentsControllerSettings
-                {
-                    SecureServiceEndpoint = GetEnvironmentVariableOrThrow("SECURE_SERVICE_ENDPOINT")
-                }
-            );
+            services.AddSingleton<PaymentsControllerSettings>(paymentsControllerSettings);
 
             services.AddControllers();
         }
