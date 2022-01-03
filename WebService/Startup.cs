@@ -29,8 +29,6 @@ namespace WebService
                 }
             );
 
-            services.AddSingleton<VaultWrapper>(vault);
-
             UsernamePasswordCredentials credentials = vault.GetDatabaseCredentials();
 
             DatabaseClient database = new DatabaseClient
@@ -45,6 +43,7 @@ namespace WebService
                 credentials.Password
             );
 
+            services.AddSingleton<VaultWrapper>(vault);
             services.AddSingleton<DatabaseClient>(database);
             services.AddSingleton<PaymentsControllerSettings>
             (
