@@ -1,17 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 
 namespace WebService.Database
 {
     public class DatabaseClient : IDisposable
     {
+        private readonly ILogger _logger;
         private readonly SqlConnection _connection;
 
-        public DatabaseClient(DatabaseSettings settings, string username, string password)
+        public DatabaseClient(ILoggerFactory loggerFactory, DatabaseSettings settings, string username, string password)
         {
+            _logger = loggerFactory.CreateLogger("Database");
+            _logger.LogInformation($"connecting to '{ settings.DataSource }' database with username { username }: started");
+
             _connection = new SqlConnection(BuildConnectionString(settings, username, password));
             _connection.Open();
+
+            _logger.LogInformation($"connecting to '{ settings.DataSource }' database with username { username }: done");
         }
 
         public IEnumerable<Product> GetProducts()

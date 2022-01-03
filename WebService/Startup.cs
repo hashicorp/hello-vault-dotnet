@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using VaultSharp.V1.SecretsEngines;
 using WebService.Controllers;
 using WebService.Database;
@@ -12,12 +13,20 @@ namespace WebService
 {
     public class Startup
     {
+        private readonly ILoggerFactory _loggerFactory;
+
+        public Startup(ILoggerFactory loggerFactory)
+        {
+            _loggerFactory = loggerFactory;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             VaultWrapper vault = new VaultWrapper
             (
+                _loggerFactory,
                 new VaultWrapperSettings
                 {
                     Address                 = GetEnvironmentVariableOrThrow("VAULT_ADDRESS"),
@@ -33,6 +42,7 @@ namespace WebService
 
             DatabaseClient database = new DatabaseClient
             (
+                _loggerFactory,
                 new DatabaseSettings
                 {
                     DataSource        = GetEnvironmentVariableOrThrow("DATABASE_DATA_SOURCE"),
@@ -78,7 +88,7 @@ namespace WebService
 
             if (String.IsNullOrEmpty(value))
             {
-                throw new ApplicationException($"The required environment variable '{ variable }' is not set");
+                throw new ApplicationException($"the required environment variable '{ variable }' is not set");
             }
 
             return value;
