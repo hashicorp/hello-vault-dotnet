@@ -125,6 +125,10 @@ fetching products from database: started
 fetching products from database: done
 ```
 
+### Docker Compose Architecture
+
+![arch overview](images/arch-overview.svg)
+
 [vault]:           https://www.vaultproject.io/
 [vaultsharp]:      https://github.com/rajanadar/VaultSharp
 [docker]:          https://docs.docker.com/get-docker/
