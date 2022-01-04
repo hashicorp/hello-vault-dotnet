@@ -31,11 +31,7 @@ namespace WebService.Controllers
         public string CreatePayment()
         {
             // fetch the secret api key from Vault
-            _logger.LogInformation("retrieving api key from Vault: started");
-
             string apiKey = _vault.GetSecretApiKey();
-
-            _logger.LogInformation("retrieving api key from Vault: done");
 
             HttpWebRequest request = WebRequest.Create(_settings.SecureServiceEndpoint) as HttpWebRequest;
 

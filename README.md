@@ -81,10 +81,8 @@ docker logs hello-vault-dotnet-app-1 2>&1 | grep "api key"
 ```
 
 ```log
-retrieving api key from Vault: started
 getting secret api key from vault: started
 getting secret api key from vault: done
-retrieving api key from Vault: done
 sent request to http://secure-service/api with api key and received a response
 ```
 
