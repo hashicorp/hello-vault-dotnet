@@ -79,6 +79,7 @@ info: WebService.Controllers.PaymentsController[0]
 ```
 
 ### Docker Compose Architecture
+
 ![arch overview](images/arch-overview.svg)
 
 [vault]:           https://www.vaultproject.io/
