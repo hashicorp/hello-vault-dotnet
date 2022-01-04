@@ -42,11 +42,11 @@ vault auth enable approle
 # ref: https://www.vaultproject.io/api/auth/approle#parameters
 vault write auth/approle/role/dev-role \
     token_policies=dev-policy \
-    secret_id_ttl="2m" \
-    token_ttl="2m" \
-    token_max_ttl="6m"  # artificially low ttl to demonstrate token renewal
+    secret_id_ttl="48h" \
+    token_ttl="48h" \
+    token_max_ttl="768h"
 
-# overwrite our RoleID with a known value to simplify our demo
+# overwrite our role id with a known value to simplify our demo
 vault write auth/approle/role/dev-role/role-id role_id="${APPROLE_ROLE_ID}"
 
 #####################################
@@ -56,7 +56,7 @@ vault write auth/approle/role/dev-role/role-id role_id="${APPROLE_ROLE_ID}"
 # configure a token with permissions to act as a trusted orchestrator
 # nb: for simplicity, we don't handle renewals in our simulated orchestrator
 # so we've set the ttl to a very long duration (768h); when this expires
-# the web app will no longer receive a SecretID and subsequently fail on the
+# the web app will no longer receive a secret id and subsequently fail on the
 # next attempted AppRole login
 # ref: https://www.vaultproject.io/docs/commands/token/create
 vault token create \
@@ -98,8 +98,8 @@ vault write database/roles/dev-readonly \
     creation_statements="CREATE LOGIN [{{name}}] WITH PASSWORD = '{{password}}';\
         CREATE USER [{{name}}] FOR LOGIN [{{name}}]; \
         ALTER ROLE [vault_datareader] ADD MEMBER [{{name}}];" \
-    default_ttl="1h" \
-    max_ttl="24h"
+    default_ttl="48h" \
+    max_ttl="768h"
 
 # this container is now healthy
 touch /tmp/healthy
