@@ -9,13 +9,16 @@ RUN dotnet restore
 COPY . /app
 RUN dotnet publish -c Release -o out
 
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
+
 COPY --from=build-env /app/out .
+
 ENTRYPOINT [ "dotnet", "WebService.dll" ]
 
 EXPOSE 80
@@ -25,4 +28,4 @@ HEALTHCHECK \
     --interval=1s \
     --timeout=1s \
     --retries=30 \
-        CMD curl --fail -s http://localhost/healthcheck || exit 1
+        CMD curl --fail -s --header "Content-Length: 0" http://localhost/Healthcheck || exit 1
