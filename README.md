@@ -27,6 +27,9 @@ This step may take a few minutes to download the necessary dependencies.
 ./run.sh
 ```
 
+The script will bring up the web app and all of its dependencies using an
+architecture-specific `docker-compose.*.yaml` file.
+
 ```
 Restarting with docker-compose.arm64.yaml
 ...
@@ -48,7 +51,7 @@ docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 ```
 
 ```
-hello-vault-dotnet-app-1                    Up About a minute             0.0.0.0:80->80/tcp
+hello-vault-dotnet-app-1                    Up About a minute (healthy)   0.0.0.0:80->80/tcp
 hello-vault-dotnet-trusted-orchestrator-1   Up About a minute (healthy)
 hello-vault-dotnet-vault-server-1           Up About a minute (healthy)   0.0.0.0:8200->8200/tcp
 hello-vault-dotnet-secure-service-1         Up About a minute (healthy)   0.0.0.0:8080->80/tcp
@@ -87,10 +90,10 @@ sent request to http://secure-service/api with api key and received a response
 
 ### 3. Try out `GET /api/Products` endpoint (dynamic secrets workflow)
 
-`GET /api/Products` endpoint is a simple example of the dynamic secrets workflow.
-Our application uses Vault's database secrets engine to generate dynamic
-database credentials, which are then used to connect to and retrieve data from a
-PostgreSQL database.
+`GET /api/Products` endpoint is a simple example of the dynamic secrets
+workflow. Our application uses Vault's database secrets engine to generate
+dynamic database credentials in our MSSQL database. The credentials are
+then used by to connect to and retrieve data from the database.
 
 ```shell-session
 curl -s -X GET --header "Content-Length: 0" http://localhost/api/Products | jq
