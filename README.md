@@ -28,7 +28,7 @@ This step may take a few minutes to download the necessary dependencies.
 ```
 
 The script will bring up the web app and all of its dependencies using an
-architecture-specific `docker-compose.*.yaml` file.
+architecture-specific `docker-compose.*.yaml` file:
 
 ```
 Restarting with docker-compose.arm64.yaml
