@@ -78,8 +78,50 @@ docker logs hello-vault-dotnet-app-1 2>&1 | grep "api key"
 ```
 
 ```log
-      retrieving api key from Vault: started
-      retrieving api key from Vault: done
+retrieving api key from Vault: started
+getting secret api key from vault: started
+getting secret api key from vault: done
+retrieving api key from Vault: done
+sent request to http://secure-service/api with api key and received a response
+```
+
+### 3. Try out `GET /api/Products` endpoint (dynamic secrets workflow)
+
+`GET /api/Products` endpoint is a simple example of the dynamic secrets workflow.
+Our application uses Vault's database secrets engine to generate dynamic
+database credentials, which are then used to connect to and retrieve data from a
+PostgreSQL database.
+
+```shell-session
+curl -s -X GET --header "Content-Length: 0" http://localhost/api/Products | jq
+```
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Rustic Webcam"
+  },
+  {
+    "id": 2,
+    "name": "Haunted Coloring Book"
+  }
+]
+```
+
+Check the logs:
+
+```shell-session
+docker logs hello-vault-dotnet-app-1 | grep "database"
+```
+
+```log
+getting temporary database credentials from vault: started
+getting temporary database credentials from vault: done
+connecting to 'tcp:database,1433' database with username v-approle-dev-readonly-1pdIiChXK790ErrolCIa-1641254312: started
+connecting to 'tcp:database,1433' database with username v-approle-dev-readonly-1pdIiChXK790ErrolCIa-1641254312: done
+fetching products from database: started
+fetching products from database: done
 ```
 
 [vault]:           https://www.vaultproject.io/
