@@ -13,6 +13,7 @@ namespace WebService.Database
         public DatabaseClient(ILoggerFactory loggerFactory, DatabaseSettings settings, string username, string password)
         {
             _logger = loggerFactory.CreateLogger("Database");
+
             _logger.LogInformation($"connecting to '{ settings.DataSource }' database with username { username }: started");
 
             _connection = new SqlConnection(BuildConnectionString(settings, username, password));
@@ -23,6 +24,8 @@ namespace WebService.Database
 
         public IEnumerable<Product> GetProducts()
         {
+            _logger.LogInformation("fetching products from database: started");
+
             const string query = "SELECT * FROM [example].[dbo].[products]";
 
             using (SqlCommand command = new SqlCommand(query, _connection))
@@ -39,6 +42,8 @@ namespace WebService.Database
                     }
                 }
             }
+
+            _logger.LogInformation("fetching products from database: done");
         }
 
         private string BuildConnectionString(DatabaseSettings settings, string username, string password)
