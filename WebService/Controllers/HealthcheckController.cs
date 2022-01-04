@@ -5,7 +5,7 @@ namespace WebService.Controllers
     [Route("[controller]")]
     public class HealthcheckController : ControllerBase
     {
-        // GET /api/Products
+        // GET /Healthcheck
         [HttpGet]
         public string GetHealthcheck()
         {
