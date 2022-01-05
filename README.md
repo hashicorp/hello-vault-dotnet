@@ -33,7 +33,7 @@ architecture-specific `docker-compose.*.yaml` file:
 ```
 Restarting with docker-compose.arm64.yaml
 ...
-[+] Running 8/8
+[+] Running 9/9
  ⠿ Network hello-vault-dotnet_default                       Created       0.0s
  ⠿ Volume "hello-vault-dotnet_trusted-orchestrator-volume"  Created       0.0s
  ⠿ Container hello-vault-dotnet-database-1                  Started       0.5s
@@ -42,6 +42,7 @@ Restarting with docker-compose.arm64.yaml
  ⠿ Container hello-vault-dotnet-vault-server-1              Started       8.0s
  ⠿ Container hello-vault-dotnet-trusted-orchestrator-1      Started      14.8s
  ⠿ Container hello-vault-dotnet-app-1                       Started      16.6s
+ ⠿ Container hello-vault-dotnet-healthy-1                   Started      27.0s
 ```
 
 Verify that the services started successfully:
@@ -125,9 +126,18 @@ fetching products from database: started
 fetching products from database: done
 ```
 
+## Integration Tests
+
+The following script will bring up the docker-compose environment, run the
+curl commands above, verify the results, and bring down the environment:
+
+```shell-session
+./run-tests.sh
+```
+
 ### Docker Compose Architecture
 
-![arch overview](images/arch-overview.svg)
+![architecture overview](images/architecture-overview.svg)
 
 [vault]:           https://www.vaultproject.io/
 [vaultsharp]:      https://github.com/rajanadar/VaultSharp
