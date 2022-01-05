@@ -42,7 +42,7 @@ Restarting with docker-compose.arm64.yaml
  ⠿ Container hello-vault-dotnet-vault-server-1              Started       8.0s
  ⠿ Container hello-vault-dotnet-trusted-orchestrator-1      Started      14.8s
  ⠿ Container hello-vault-dotnet-app-1                       Started      16.6s
- ⠿ Container hello-vault-dotnet-healthy-1                   Started      27.0s
+ ⠿ Container hello-vault-dotnet-app-healthy-1               Started      27.0s
 ```
 
 Verify that the services started successfully:
