@@ -91,7 +91,7 @@ services:
       database:
         condition: service_started
 
-  # secure-service is a simulated 3rd party service that requires a specific header to get a 200 response
+  # a simulated 3rd party service that requires a specific header to get a 200 response
   secure-service:
     image: nginx:latest
     environment:
@@ -108,6 +108,14 @@ services:
       interval:     1s
       timeout:      1s
       retries:      30
+
+  # a dummy service which blocks "docker compose up -d" from returning until all services are up & healthy
+  app-healthy:
+    image: alpine:latest
+    command: [ "echo", "all services are up & healthy" ]
+    depends_on:
+      app:
+        condition: service_healthy
 
 volumes:
   trusted-orchestrator-volume:
