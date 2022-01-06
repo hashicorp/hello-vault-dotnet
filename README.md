@@ -135,13 +135,18 @@ curl commands above, verify the results, and bring down the environment:
 ./run-tests.sh
 ```
 
+### Other Sample Apps
+
+- [hello-vault-go][hello-vault-go]
+
 ### Docker Compose Architecture
 
 ![architecture overview](images/architecture-overview.svg)
 
-[vault]:           https://www.vaultproject.io/
-[vaultsharp]:      https://github.com/rajanadar/VaultSharp
-[docker]:          https://docs.docker.com/get-docker/
-[docker-compose]:  https://docs.docker.com/compose/install/
-[curl]:            https://curl.se/
-[jq]:              https://stedolan.github.io/jq/
+[vault]:                 https://www.vaultproject.io/
+[vaultsharp]:            https://github.com/rajanadar/VaultSharp
+[docker]:                https://docs.docker.com/get-docker/
+[docker-compose]:        https://docs.docker.com/compose/install/
+[curl]:                  https://curl.se/
+[jq]:                    https://stedolan.github.io/jq/
+[hello-vault-go]:        https://github.com/hashicorp/hello-vault-go
