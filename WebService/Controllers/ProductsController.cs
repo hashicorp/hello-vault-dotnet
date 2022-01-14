@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using WebService.Database;
-using WebService.Vault;
 
 namespace WebService.Controllers
 {

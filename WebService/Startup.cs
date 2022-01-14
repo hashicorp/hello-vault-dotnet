@@ -1,6 +1,10 @@
 using System;
+using System.Net;
+using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -69,10 +73,27 @@ namespace WebService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseExceptionHandler(options =>
             {
-                app.UseDeveloperExceptionPage();
-            }
+                options.Run(async context =>
+                {
+                    context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                    context.Response.ContentType = "application/json";
+
+                    var exception = context.Features.Get<IExceptionHandlerFeature>();
+                    if (exception != null)
+                    {
+                        await context.Response.WriteAsync(
+                            JsonSerializer.Serialize(
+                                new
+                                {
+                                    error   = exception.Error.GetType().ToString(),
+                                    message = exception.Error.Message
+                                })
+                        ).ConfigureAwait(false);
+                    }
+                });
+            });
 
             app.UseRouting();
 

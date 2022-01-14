@@ -42,8 +42,7 @@ namespace WebService.Vault
 
             // We can't reuse the default VaultClient instance for unwrapping because
             // it needs to be intialized with a different TokenAuthMethodInfo
-            IVaultClient vaultClientForUnwrapping = new VaultClient
-            (
+            IVaultClient vaultClientForUnwrapping = new VaultClient(
                 new VaultClientSettings(settings.Address, new TokenAuthMethodInfo(vaultToken: wrappingToken))
             );
 
@@ -56,14 +55,12 @@ namespace WebService.Vault
                         .Result.Data[ "secret_id" ]
                             .ToString();
 
-            AppRoleAuthMethodInfo appRoleAuth = new AppRoleAuthMethodInfo
-            (
+            AppRoleAuthMethodInfo appRoleAuth = new AppRoleAuthMethodInfo(
                 roleId: settings.AppRoleAuthRoleId,
                 secretId: appRoleAuthSecretId
             );
 
-            IVaultClient client = new VaultClient
-            (
+            IVaultClient client = new VaultClient(
                 new VaultClientSettings(settings.Address, appRoleAuth)
             );
 
@@ -76,8 +73,7 @@ namespace WebService.Vault
         {
             _logger.LogInformation("getting secret api key from vault: started");
 
-            Secret<SecretData> secret = _client.V1.Secrets.KeyValue.V2.ReadSecretAsync
-            (
+            Secret<SecretData> secret = _client.V1.Secrets.KeyValue.V2.ReadSecretAsync(
                 // vault path within kv-v2/ (e.g. "api-key", not "kv-v2/api-key")
                 path: _settings.ApiKeyPath
             ).Result;
@@ -93,8 +89,7 @@ namespace WebService.Vault
         {
             _logger.LogInformation("getting temporary database credentials from vault: started");
 
-            Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials = _client.V1.Secrets.Database.GetCredentialsAsync
-            (
+            Secret<UsernamePasswordCredentials> dynamicDatabaseCredentials = _client.V1.Secrets.Database.GetCredentialsAsync(
                 // vault path within database/roles/ (e.g. "dev-readonly", not "database/roles/dev-readonly")
                 roleName: _settings.DatabaseCredentialsRole
             ).Result;
