@@ -144,7 +144,7 @@ curl commands above, verify the results, and bring down the environment:
 
 ### Docker Compose Architecture
 
-![architecture overview](images/architecture-overview.svg)
+![architecture overview](./pics/architecture-overview.svg)
 
 [vault]:                 https://www.vaultproject.io/
 [vault-app-role]:        https://www.vaultproject.io/docs/auth/approle
