@@ -1,8 +1,11 @@
-# hello-vault-dotnet
+# Vault Sample Application
 
-This is a sample application that demonstrates how to authenticate to and
-retrieve secrets from HashiCorp [Vault][vault] using the
-[VaultSharp][vaultsharp] client library.
+This is a sample application that demonstrates various aspects of interacting
+with HashiCorp [Vault][vault], including:
+
+- [AppRole][vault-app-role] authentication with a [response-wrapping token][vault-token-wrapping]
+- Reading a static secret from [kv-v2 secrets engine][vault-kv-v2]
+- Reading a dynamic secret from [MSSQL database secrets engine][vault-mssql]
 
 ## Prerequisites
 
@@ -144,9 +147,11 @@ curl commands above, verify the results, and bring down the environment:
 ![architecture overview](images/architecture-overview.svg)
 
 [vault]:                 https://www.vaultproject.io/
-[vaultsharp]:            https://github.com/rajanadar/VaultSharp
+[vault-app-role]:        https://www.vaultproject.io/docs/auth/approle
+[vault-token-wrapping]:  https://www.vaultproject.io/docs/concepts/response-wrapping
+[vault-kv-v2]:           https://www.vaultproject.io/docs/secrets/kv/kv-v2
+[vault-mssql]:           https://www.vaultproject.io/docs/secrets/databases/mssql
 [docker]:                https://docs.docker.com/get-docker/
 [docker-compose]:        https://docs.docker.com/compose/install/
 [curl]:                  https://curl.se/
 [jq]:                    https://stedolan.github.io/jq/
-[hello-vault-go]:        https://github.com/hashicorp/hello-vault-go
