@@ -155,3 +155,4 @@ curl commands above, verify the results, and bring down the environment:
 [docker-compose]:        https://docs.docker.com/compose/install/
 [curl]:                  https://curl.se/
 [jq]:                    https://stedolan.github.io/jq/
+[hello-vault-go]:        https://github.com/hashicorp/hello-vault-go
