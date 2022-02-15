@@ -138,11 +138,11 @@ curl commands above, verify the results, and bring down the environment:
 ./run-tests.sh
 ```
 
-### Other Sample Apps
+## Other Sample Apps
 
 - [hello-vault-go][hello-vault-go]
 
-### Docker Compose Architecture
+## Docker Compose Architecture
 
 ![architecture overview](./pics/architecture-overview.svg)
 
@@ -155,3 +155,4 @@ curl commands above, verify the results, and bring down the environment:
 [docker-compose]:        https://docs.docker.com/compose/install/
 [curl]:                  https://curl.se/
 [jq]:                    https://stedolan.github.io/jq/
+[hello-vault-go]:        https://github.com/hashicorp/hello-vault-go
