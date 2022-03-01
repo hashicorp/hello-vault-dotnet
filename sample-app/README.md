@@ -141,7 +141,7 @@ commands above, verify the results, and bring down the environment:
 
 ## Docker Compose Architecture
 
-![architecture overview](./pics/architecture-overview.svg)
+![Architecture overview of the docker-compose setup. Our C# service authenticates with a Vault dev instance using a token provided by a Trusted Orchestrator. It then fetches an api key from Vault to communicate with a Secure Service. It also connects to a MSSQL database using Vault-provided credentials.](./pics/architecture-overview.svg)
 
 [vault]:                 https://www.vaultproject.io/
 [vault-app-role]:        https://www.vaultproject.io/docs/auth/approle
