@@ -15,3 +15,4 @@ concepts, including authentication, static and dynamic secrets.
 ## Examples in other languages
 
 - [Go](https://github.com/hashicorp/hello-vault-go)
+- [Java](https://github.com/hashicorp/hello-vault-spring)

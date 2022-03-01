@@ -3,7 +3,8 @@
 This is a sample application that demonstrates various aspects of interacting
 with HashiCorp [Vault][vault], including:
 
-- [AppRole][vault-app-role] authentication with a [response-wrapping token][vault-token-wrapping]
+- [AppRole][vault-app-role] authentication with a [response-wrapping
+  token][vault-token-wrapping]
 - Reading a static secret from [kv-v2 secrets engine][vault-kv-v2]
 - Reading a dynamic secret from [MSSQL database secrets engine][vault-mssql]
 
@@ -94,8 +95,8 @@ sent request to http://secure-service/api with api key and received a response
 
 `GET /api/Products` endpoint is a simple example of the dynamic secrets
 workflow. Our application uses Vault's database secrets engine to generate
-dynamic database credentials in our MSSQL database. The credentials are
-then used by to connect to and retrieve data from the database.
+dynamic database credentials in our MSSQL database. The credentials are then
+used by to connect to and retrieve data from the database.
 
 ```shell-session
 curl -s -X GET --header "Content-Length: 0" http://localhost/api/Products | jq
@@ -131,20 +132,16 @@ fetching products from database: done
 
 ## Integration Tests
 
-The following script will bring up the docker-compose environment, run the
-curl commands above, verify the results, and bring down the environment:
+The following script will bring up the docker-compose environment, run the curl
+commands above, verify the results, and bring down the environment:
 
 ```shell-session
 ./run-tests.sh
 ```
 
-## Other Sample Apps
-
-- [hello-vault-go][hello-vault-go]
-
 ## Docker Compose Architecture
 
-![architecture overview](./pics/architecture-overview.svg)
+![Architecture overview of the docker-compose setup. Our C# service authenticates with a Vault dev instance using a token provided by a Trusted Orchestrator. It then fetches an api key from Vault to communicate with a Secure Service. It also connects to a MSSQL database using Vault-provided credentials.](./pics/architecture-overview.svg)
 
 [vault]:                 https://www.vaultproject.io/
 [vault-app-role]:        https://www.vaultproject.io/docs/auth/approle
@@ -155,4 +152,3 @@ curl commands above, verify the results, and bring down the environment:
 [docker-compose]:        https://docs.docker.com/compose/install/
 [curl]:                  https://curl.se/
 [jq]:                    https://stedolan.github.io/jq/
-[hello-vault-go]:        https://github.com/hashicorp/hello-vault-go

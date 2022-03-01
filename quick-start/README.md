@@ -1,8 +1,8 @@
 # Quick Start
 
 This is a quick example of how to retrieve your first secret from HashiCorp
-[Vault](https://www.vaultproject.io/), using the community-maintained
-client library [VaultSharp](https://github.com/rajanadar/VaultSharp).
+[Vault](https://www.vaultproject.io/), using the community-maintained client
+library [VaultSharp](https://github.com/rajanadar/VaultSharp).
 
 ## How To Use
 
