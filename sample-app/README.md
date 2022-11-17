@@ -38,15 +38,15 @@ architecture-specific `docker-compose.*.yaml` file:
 Restarting with docker-compose.arm64.yaml
 ...
 [+] Running 9/9
- ⠿ Network hello-vault-dotnet_default                       Created       0.0s
- ⠿ Volume "hello-vault-dotnet_trusted-orchestrator-volume"  Created       0.0s
- ⠿ Container hello-vault-dotnet-database-1                  Started       0.5s
- ⠿ Container hello-vault-dotnet-secure-service-1            Started       0.6s
- ⠿ Container hello-vault-dotnet-database-data-1             Started       1.3s
- ⠿ Container hello-vault-dotnet-vault-server-1              Started       8.0s
- ⠿ Container hello-vault-dotnet-trusted-orchestrator-1      Started      14.8s
- ⠿ Container hello-vault-dotnet-app-1                       Started      16.6s
- ⠿ Container hello-vault-dotnet-app-healthy-1               Started      27.0s
+ ⠿ Network ample-app_default                       Created       0.0s
+ ⠿ Volume "sample-app_trusted-orchestrator-volume"  Created       0.0s
+ ⠿ Container sample-app-database_1                  Started       0.5s
+ ⠿ Container sample-app_secure-service_1            Started       0.6s
+ ⠿ Container sample-app_database-data_1             Started       1.3s
+ ⠿ Container sample-app_server_1              Started       8.0s
+ ⠿ Container sample-app_trusted-orchestrator_1      Started      14.8s
+ ⠿ Container sample-app_app_1                       Started      16.6s
+ ⠿ Container sample-app_healthy_1               Started      27.0s
 ```
 
 Verify that the services started successfully:
@@ -56,11 +56,11 @@ docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 ```
 
 ```
-hello-vault-dotnet-app-1                    Up About a minute (healthy)   0.0.0.0:80->80/tcp
-hello-vault-dotnet-trusted-orchestrator-1   Up About a minute (healthy)
-hello-vault-dotnet-vault-server-1           Up About a minute (healthy)   0.0.0.0:8200->8200/tcp
-hello-vault-dotnet-secure-service-1         Up About a minute (healthy)   0.0.0.0:8080->80/tcp
-hello-vault-dotnet-database-1               Up About a minute             1401/tcp, 0.0.0.0:1433->1433/tcp
+sample-app_app_1                    Up About a minute (healthy)   0.0.0.0:80->80/tcp
+sample-app_trusted-orchestrator_1   Up About a minute (healthy)
+sample-app_vault-server_1           Up About a minute (healthy)   0.0.0.0:8200->8200/tcp
+sample-app_secure-service_1         Up About a minute (healthy)   0.0.0.0:8080->80/tcp
+sample-app_database_1               Up About a minute             1401/tcp, 0.0.0.0:1433->1433/tcp
 ```
 
 ### 2. Try out `POST /api/Payments` endpoint (static secrets workflow)
@@ -82,7 +82,7 @@ curl -s -X POST --header "Content-Length: 0" http://localhost/api/Payments | jq
 Check the logs:
 
 ```shell-session
-docker logs hello-vault-dotnet-app-1 2>&1 | grep "api key"
+docker logs sample-app_app_1 2>&1 | grep "api key"
 ```
 
 ```log
@@ -118,7 +118,7 @@ curl -s -X GET --header "Content-Length: 0" http://localhost/api/Products | jq
 Check the logs:
 
 ```shell-session
-docker logs hello-vault-dotnet-app-1 | grep "database"
+docker logs sample-app_app_1 | grep "database"
 ```
 
 ```log
