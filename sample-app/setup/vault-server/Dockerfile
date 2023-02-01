@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 FROM vault:1.9.1
 
 # Add jq to make scripting the calls a bit easier
