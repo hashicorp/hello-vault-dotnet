@@ -1,7 +1,7 @@
 # hello-vault-dotnet
 
 Runnable C# examples of how to integrate an application with HashiCorp
-[Vault](https://www.vaultproject.io/).
+[Vault](https://developer.hashicorp.com/vault).
 
 All examples here run Vault in `-dev` mode which is insecure and should not be run in production, but these examples can be a good starting point to learn from.
 
