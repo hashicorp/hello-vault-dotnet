@@ -4,7 +4,7 @@
 
 
 echo "Starting Vault dev server.."
-container_id=$(docker run --rm --detach -p 8200:8200 -e 'VAULT_DEV_ROOT_TOKEN_ID=dev-only-token' vault)
+container_id=$(docker run --rm --detach -p 8200:8200 -e 'VAULT_DEV_ROOT_TOKEN_ID=dev-only-token' hashicorp/vault)
 
 echo "Running quickstart example."
 dotnet run Program.cs
